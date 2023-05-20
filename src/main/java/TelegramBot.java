@@ -9,6 +9,8 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 
 public class TelegramBot extends TelegramLongPollingBot {
+
+
     @Getter
     @Setter
     private String token;
@@ -21,7 +23,6 @@ public class TelegramBot extends TelegramLongPollingBot {
         this.token = token;
         this.username = username;
     }
-
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -39,6 +40,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             }
         }
     }
+
     public  void botConnect() throws TelegramApiException {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
         telegramBotsApi.registerBot(this);
