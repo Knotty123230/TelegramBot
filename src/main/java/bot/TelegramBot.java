@@ -5,9 +5,13 @@ import lombok.Setter;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+
+import java.io.File;
 
 
 public class TelegramBot extends TelegramLongPollingBot {
@@ -35,8 +39,12 @@ public class TelegramBot extends TelegramLongPollingBot {
             SendMessage message = new SendMessage();
             message.setChatId(chatId);
             message.setText("Привіт, я бот, який надає актуальні курси валют!");
+            SendPhoto sendPhoto = new SendPhoto();
+            sendPhoto.setChatId(chatId);
+            sendPhoto.setPhoto(new InputFile(new File("photo/photo.jpg")));
             try {
                 execute(message);
+                execute(sendPhoto);
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
