@@ -12,7 +12,6 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import java.io.File;
 
-import static buttons.Buttons.createKeyboard;
 
 
 public class TelegramBot extends TelegramLongPollingBot {
@@ -43,13 +42,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 throw new RuntimeException(e);
             }
 
-            }else if (update.hasMessage()){
-            try {
-                execute(createKeyboard(chatId));
-            } catch (TelegramApiException e) {
-                throw new RuntimeException(e);
             }
-        }
         }
 
         public static SendPhoto sendPhoto(long id, String filePath){
