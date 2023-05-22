@@ -2,7 +2,7 @@ import bot.TelegramBot;
 import constants.Constants;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-public class main {
+public class Main {
     public static void main(String[] args) throws TelegramApiException {
 
 
