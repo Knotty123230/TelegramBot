@@ -12,6 +12,8 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import java.io.File;
 
+import static buttons.Buttons.createKeyboard;
+
 
 public class TelegramBot extends TelegramLongPollingBot {
 
@@ -41,18 +43,23 @@ public class TelegramBot extends TelegramLongPollingBot {
                 throw new RuntimeException(e);
             }
 
+            }else if (update.hasMessage()){
+            try {
+                execute(createKeyboard(chatId));
+            } catch (TelegramApiException e) {
+                throw new RuntimeException(e);
             }
         }
+        }
 
-        public SendPhoto sendPhoto(long id, String filePath){
+        public static SendPhoto sendPhoto(long id, String filePath){
             SendPhoto photo = new SendPhoto();
             photo.setChatId(id);
             photo.setPhoto(new InputFile(new File(filePath)));
             return photo;
         }
 
-
-        public  SendMessage sendMessage(long id, String text){
+        public static SendMessage sendMessage(long id, String text){
             SendMessage message = new SendMessage();
             message.setChatId(id);
             message.setText(text);
