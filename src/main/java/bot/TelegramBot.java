@@ -3,9 +3,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+
 
 import static service.BotService.sendMessage;
 import static service.BotService.sendPhoto;
@@ -39,7 +41,18 @@ public class TelegramBot extends TelegramLongPollingBot {
                 throw new RuntimeException(e);
             }
 
+            }else {
+            try {
+                SendMessage sendMessage = new SendMessage();
+                sendMessage.setText("dkadkak");
+                sendMessage.setChatId(chatId);
+                sendMessage.setReplyMarkup(Button.button());
+                execute(sendMessage);
+            } catch (TelegramApiException e) {
+                throw new RuntimeException(e);
             }
+
+        }
         }
     public  void botConnect() throws TelegramApiException {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
