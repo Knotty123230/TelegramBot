@@ -1,4 +1,5 @@
 package bot;
+import buttons.service.ButtonsService;
 import lombok.Getter;
 import lombok.Setter;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -7,7 +8,6 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
-
 
 import static service.BotService.sendMessage;
 import static service.BotService.sendPhoto;
@@ -29,6 +29,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         this.username = username;
     }
 
+
     @Override
     public void onUpdateReceived(Update update) {
         Long chatId = update.getMessage().getChatId();
@@ -41,17 +42,14 @@ public class TelegramBot extends TelegramLongPollingBot {
                 throw new RuntimeException(e);
             }
 
-            }else {
+            }else if (inputText.equals("settings")){
+            SendMessage message = sendMessage(chatId, "Налаштування");
+            message.setReplyMarkup(ButtonsService.getKeyboard("Settings", "set"));
             try {
-                SendMessage sendMessage = new SendMessage();
-                sendMessage.setText("dkadkak");
-                sendMessage.setChatId(chatId);
-                sendMessage.setReplyMarkup(Button.button());
-                execute(sendMessage);
+                execute(message);
             } catch (TelegramApiException e) {
                 throw new RuntimeException(e);
             }
-
         }
         }
     public  void botConnect() throws TelegramApiException {
