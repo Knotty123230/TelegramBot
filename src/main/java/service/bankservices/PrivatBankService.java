@@ -1,4 +1,4 @@
-package bankservices;
+package service.bankservices;
 
 import dto.EnumPrivat;
 import parser.BankParser;
