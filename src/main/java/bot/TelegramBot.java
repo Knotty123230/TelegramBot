@@ -1,5 +1,4 @@
 package bot;
-
 import lombok.Getter;
 import lombok.Setter;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -32,24 +31,33 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-
         Long chatId = update.getMessage().getChatId();
         String inputText = update.getMessage().getText();
         if (inputText.startsWith("/start")) {
-            SendMessage message = new SendMessage();
-            message.setChatId(chatId);
-            message.setText("Привіт, я бот, який надає актуальні курси валют!");
-            SendPhoto sendPhoto = new SendPhoto();
-            sendPhoto.setChatId(chatId);
-            sendPhoto.setPhoto(new InputFile(new File("photo/photo.jpg")));
             try {
-                execute(message);
-                execute(sendPhoto);
+                execute(sendMessage(chatId, "Привіт, я бот, який надає актуальні курси валют!"));
+                execute(sendPhoto(chatId, "photo/photo.jpg"));
             } catch (TelegramApiException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+
             }
         }
-    }
+
+        public SendPhoto sendPhoto(long id, String filePath){
+            SendPhoto photo = new SendPhoto();
+            photo.setChatId(id);
+            photo.setPhoto(new InputFile(new File(filePath)));
+            return photo;
+        }
+
+
+        public  SendMessage sendMessage(long id, String text){
+            SendMessage message = new SendMessage();
+            message.setChatId(id);
+            message.setText(text);
+            return message;
+        }
 
     public  void botConnect() throws TelegramApiException {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
