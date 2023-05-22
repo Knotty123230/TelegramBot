@@ -23,14 +23,11 @@ public class PrivatCurrencyImpl implements CurrencyService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Type type = TypeToken.getParameterized(List.class, CurrencyItemDto.class)
+        Type type = TypeToken.getParameterized(List.class, MonoCurrencyItemDto.class)
                 .getType();
-        List<CurrencyItemDto> items = new Gson().fromJson(json,type);
+        List<MonoCurrencyItemDto> items = new Gson().fromJson(json,type);
         return items.stream()
-                .filter(it -> it.getCc() == currency)
-                .map(it-> it.getRate())
-                .findFirst()
-                .orElseThrow();
+
     }
 
 
