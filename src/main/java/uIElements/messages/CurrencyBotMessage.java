@@ -1,4 +1,4 @@
-package userSettings.messages;
+package uIElements.messages;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
