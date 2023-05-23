@@ -21,13 +21,15 @@ public class ButtonService {
             keyboard.add(row);
             keyboardMarkup.setKeyboard(keyboard);
         }else {
-            for (int i = 0; i < nameButton.size() && i < callbackData.size(); i++) {
+            for (int i = 0; i < nameButton.size(); i++) {
+                inlineKeyboardButton = new InlineKeyboardButton();
                 inlineKeyboardButton.setText(nameButton.get(i));
                 inlineKeyboardButton.setCallbackData(callbackData.get(i));
+                row = new ArrayList<>();
                 row.add(inlineKeyboardButton);
                 keyboard.add(row);
-                keyboardMarkup.setKeyboard(keyboard);
             }
+            keyboardMarkup.setKeyboard(keyboard);
         }
         return keyboardMarkup;
     }
