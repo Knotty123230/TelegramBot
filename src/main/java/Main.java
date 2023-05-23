@@ -2,6 +2,7 @@ import bot.TelegramBot;
 import constants.Constants;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+
 public class Main {
     public static void main(String[] args) throws TelegramApiException {
 
@@ -10,5 +11,6 @@ public class Main {
                 Constants.TOKEN,
                 Constants.USERNAME);
         telegramBot.botConnect();
+
     }
 }
