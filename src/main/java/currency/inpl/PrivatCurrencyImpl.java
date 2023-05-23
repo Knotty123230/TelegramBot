@@ -1,10 +1,6 @@
 
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import org.example.test.Currency;
-import org.example.test.CurrencyItemDto;
-import org.example.test.CurrencyService;
 import org.jsoup.Jsoup;
 
 import java.io.IOException;
@@ -30,7 +26,7 @@ public class PrivatCurrencyImpl implements CurrencyService {
         List<PrivatCurrencyItemDto> items = new Gson().fromJson(json,type);
         return items.stream()
                 .filter(it -> it.getCcy() == currency)
-                .filter(it -> it.Base_ccy == Currency.UAH)
+                .filter(it -> it.getBase_ccy == Currency.UAH)
                 .map(it-> it.getBuy())
                 .findFirst()
                 .orElseThrow();

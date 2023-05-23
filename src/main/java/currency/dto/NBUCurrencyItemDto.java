@@ -4,7 +4,7 @@ import lombok.Data;
 @Data
 public class NBUCurrencyItemDto {
     private Currency cc;
-    private Float rate;
+    private float rate;
 
     @Override
     public String toString() {

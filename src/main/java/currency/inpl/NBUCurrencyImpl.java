@@ -2,9 +2,7 @@
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import org.example.test.Currency;
-import org.example.test.CurrencyItemDto;
-import org.example.test.CurrencyService;
+
 import org.jsoup.Jsoup;
 
 import java.io.IOException;
