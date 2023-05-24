@@ -8,10 +8,10 @@ import java.util.List;
 
 public class MonoCurrencyImpl implements CurrencyService {
     @Override
-    public double getCurrenceRate(Currency currency) {
-        String url = "https://api.monobank.ua/bank/currency"
+    public double getCurrenceRate(MonoCurrency currency) {
+        String url = "https://api.monobank.ua/bank/currency";
 
-        String json = null;
+        String json = "";
 
         try{
             json = Jsoup.connect(url)
@@ -26,6 +26,11 @@ public class MonoCurrencyImpl implements CurrencyService {
                 .getType();
         List<MonoCurrencyItemDto> items = new Gson().fromJson(json,type);
         return items.stream()
+                .filter(it -> it.getCurrencyCodeA() == currency)
+                .filter(it -> it.getCurrencyCodeB() == MonoCurrency.UAH)
+                .map(it->it.getRateBuy())
+                .findFirst()
+                .orElseThrow();
 
     }
 
