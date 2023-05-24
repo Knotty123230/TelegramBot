@@ -5,9 +5,12 @@ import lombok.Setter;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+import service.BotService;
+
 import java.util.List;
 import static service.BotService.sendPhoto;
 
@@ -42,13 +45,11 @@ public class TelegramBot extends TelegramLongPollingBot {
                 }
             }
         }else if (update.hasCallbackQuery()){
-            String data = update.getCallbackQuery().getData();
-            if (data.equals("Start")){
                 try {
-                    execute(new CountSience().getUpdate(update));
+                    Message execute = execute(new CountSience().getUpdate(update));
+                    execute(BotService.deleteMessage(execute.getChatId().toString(), execute.getMessageId()));
                 } catch (TelegramApiException e) {
                     throw new RuntimeException(e);
-                }
             }
         }
 
