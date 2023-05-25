@@ -19,11 +19,9 @@ public class CountSience implements Update {
                 "2",
                 "3",
                 "4");
-        System.out.println(nameOfButtons);
-        System.out.println(callback);
 
         InlineKeyboardMarkup inlineKeyboardMarkup = ButtonService.sendButtonMessage(nameOfButtons, callback);
-        SendMessage sendMessage = BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(), "Обери к-сть знаків після коми");
+        SendMessage sendMessage = BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(), "Обери к-сть знаків після коми:");
         sendMessage.setReplyMarkup(inlineKeyboardMarkup);
         return sendMessage;
     }
