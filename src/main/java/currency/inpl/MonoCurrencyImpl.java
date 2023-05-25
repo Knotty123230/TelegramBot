@@ -28,7 +28,7 @@ public class MonoCurrencyImpl implements CurrencyService {
         return items.stream()
                 .filter(it -> it.getCurrencyCodeA() == currency)
                 .filter(it -> it.getCurrencyCodeB() == MonoCurrency.UAH)
-                .map(it->it.getRateBuy())
+                .map(MonoCurrencyItemDto::getRateBuy)
                 .findFirst()
                 .orElseThrow();
 
