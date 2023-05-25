@@ -3,6 +3,7 @@ package bot;
 import button.service.SaveButton;
 import User.Whiter;
 import button.service.ButtonService;
+import constants.PageLabels;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import service.BotService;
@@ -30,7 +31,7 @@ public class CountSince implements Update {
         String callbackData = update.getCallbackQuery().getData();
             for (int i = 0; i < callback.size(); i++) {
                 if (callbackData.equals(callback.get(i))) {
-                    nameOfButtons.set(i, nameOfButtons.get(i) + "\u2705");
+                    nameOfButtons.set(i, nameOfButtons.get(i) + "✅");
                     InlineKeyboardMarkup inlineKeyboardMarkup = ButtonService.sendButtonMessage(nameOfButtons, callback);
                     sendMessage = BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(),
                             "Обери к-сть знаків після коми");
@@ -43,14 +44,12 @@ public class CountSince implements Update {
                         throw new RuntimeException(e);
                     }
 
-                    return sendMessage;
                 }
             }
-        if (update.hasCallbackQuery()){
+        if (update.getCallbackQuery().getData().equals(PageLabels.commaSignsLabel)){
             InlineKeyboardMarkup inlineKeyboardMarkup = ButtonService.sendButtonMessage(nameOfButtons, callback);
             sendMessage = BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(), "Обери к-сть знаків після коми");
             sendMessage.setReplyMarkup(inlineKeyboardMarkup);
-            return sendMessage;
         }
         return sendMessage;
     }

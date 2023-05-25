@@ -1,16 +1,17 @@
 package bot;
 
 import button.service.ButtonService;
+import button.service.SaveButton;
 import constants.PageLabels;
 import lombok.Getter;
 import lombok.Setter;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+import service.BotService;
 
 
 import java.util.List;
@@ -38,33 +39,103 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-
+        String save = "";
+        if (update.hasMessage() && update.getMessage().hasText()){
+            Long chatId = update.getMessage().getChatId();
+            String text = update.getMessage().getText();
+            if (text.equals("/start")){
                 try {
                     execute(new StartMessage().getUpdate(update));
-                    SendPhoto sendPhoto = sendPhoto(update.getMessage().getChatId(), "photo/photo.jpg");
-                    sendPhoto.setReplyMarkup(ButtonService.sendButtonMessage(List.of("Start"), List.of("Start")));
+                    SendPhoto sendPhoto = sendPhoto(chatId, "photo/photo.jpg");
+                    sendPhoto.setReplyMarkup(ButtonService.sendButtonMessage(List.of("start"), List.of("start")));
                     execute(sendPhoto);
                 } catch (TelegramApiException e) {
                     throw new RuntimeException(e);
                 }
             }
-
-                    throw new RuntimeException(e);
-            }
-        }
-
-        /*  to open Settings to choose time for notification */
-        if (update.hasCallbackQuery()) {
+        }else if (update.hasCallbackQuery()){
             String data = update.getCallbackQuery().getData();
-            if (data.equals(PageLabels.timeLabel)) {
-                try {
-                    execute(new NotificationTimePage().getUpdate(update));
-                } catch (TelegramApiException e) {
-                    throw new RuntimeException(e);
+            Long chatId = update.getCallbackQuery().getMessage().getChatId();
+            Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
+            switch (data) {
+                default -> {
+                    try {
+                        execute(new CurrencyPage().getUpdate(update));
+                    } catch (TelegramApiException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
+                case "start" -> {
+                    try {
+                        execute(new UserSettingsPage().getUpdate(update));
+                    } catch (TelegramApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                case PageLabels.banksLabel -> {
+                    try {
+                        execute(new BankPage().getUpdate(update));
+                    } catch (TelegramApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+
+                case  PageLabels.commaSignsLabel -> {
+                    try {
+                        execute(new CountSince().getUpdate(update));
+                    } catch (TelegramApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                    save = SaveButton.getSave(update);
+                }
+                case PageLabels.currenciesLabel -> {
+                    try {
+                        execute(new CurrencyPage().getUpdate(update));
+                    } catch (TelegramApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                 }
+                 case "1" -> {
+                    try {
+                        execute(new CountSince().getUpdate(update));
+                        save = SaveButton.getSave(update);
+                        execute(BotService.deleteMessage(chatId.toString(), messageId));
+                    } catch (TelegramApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                case "2" -> {
+                    try {
+                        execute(new CountSince().getUpdate(update));
+                        save = SaveButton.getSave(update);
+                        execute(BotService.deleteMessage(chatId.toString(), messageId));
+                    } catch (TelegramApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                case "3" -> {
+                    try {
+                        execute(new CountSince().getUpdate(update));
+                        save = SaveButton.getSave(update);
+                        execute(BotService.deleteMessage(chatId.toString(), messageId));
+                    } catch (TelegramApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                case "4" -> {
+                    try {
+                        execute(new CountSince().getUpdate(update));
+                        save = SaveButton.getSave(update);
+                        execute(BotService.deleteMessage(chatId.toString(), messageId));
+                    } catch (TelegramApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                }
+
             }
         }
-    }
 
     public void botConnect() throws TelegramApiException {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);

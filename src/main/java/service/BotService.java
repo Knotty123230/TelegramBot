@@ -21,7 +21,6 @@ public class BotService {
         return message;
     }
     public static DeleteMessage deleteMessage(String chatId, Integer messageId){
-        messageId -= 1;
         return new DeleteMessage(chatId, messageId);
     }
 }

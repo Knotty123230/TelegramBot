@@ -29,30 +29,3 @@ public class UserSettingsPage implements Update {
         return sendMessage;
     }
 }
-
-///* Page "User Settings" and its buttons  - start */
-//
-//        if(update.hasCallbackQuery()) {
-//
-//            if(update.getCallbackQuery().getData().equals(PageLabels.userSettingsLabel)) {
-//                SendMessage message = CurrencyBotMessage.createMessage(chatId, "Налаштування: ");
-//
-//
-//                List<String> buttons = Arrays.asList(
-//                        "Кількість знаків після коми",
-//                        "Банк",
-//                        "Валюти",
-//                        "Час оповіщень"
-//                );
-//
-//                CurrencyBotButton.attachButtons(message, Map.of(
-//                                buttons.get(0), PageLabels.commaSignsLabel,
-//                                buttons.get(1), PageLabels.banksLabel,
-//                                buttons.get(2), PageLabels.currenciesLabel,
-//                                buttons.get(3), PageLabels.timeLabel
-//                                ));
-//                sendApiMethodAsync(message);
-//            }
-//        }
-//
-//        /* Page "User Settings" and its buttons  - END */
