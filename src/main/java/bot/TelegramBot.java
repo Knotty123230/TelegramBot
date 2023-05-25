@@ -1,4 +1,5 @@
 package bot;
+import User.Reader;
 import button.service.ButtonService;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import service.BotService;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 import static service.BotService.sendPhoto;
 
@@ -33,6 +35,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+
         if (update.hasMessage()){
             if (update.getMessage().getText().equals("/start")){
                 try {
@@ -45,10 +48,11 @@ public class TelegramBot extends TelegramLongPollingBot {
                 }
             }
         }else if (update.hasCallbackQuery()){
-                try {
-                    Message execute = execute(new CountSience().getUpdate(update));
+            try {
+                    Message execute = execute(new CountSince().getUpdate(update));
                     execute(BotService.deleteMessage(execute.getChatId().toString(), execute.getMessageId()));
-                } catch (TelegramApiException e) {
+                    System.out.println(Reader.read(update));
+            } catch (TelegramApiException | FileNotFoundException e) {
                     throw new RuntimeException(e);
             }
         }

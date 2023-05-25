@@ -1,24 +1,28 @@
 package bot;
 
+import User.Whiter;
 import button.service.ButtonService;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import service.BotService;
 import service.Update;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CountSience implements Update {
+public class CountSince implements Update {
 
     @Override
-    public SendMessage getUpdate(org.telegram.telegrambots.meta.api.objects.Update update) {
+    public SendMessage getUpdate(org.telegram.telegrambots.meta.api.objects.Update update){
         SendMessage sendMessage = null;
-        List<String> nameOfButtons = new ArrayList<>(List.of("1",
+        List<String> nameOfButtons = new ArrayList<>(List.of(
+                "1",
                 "2",
                 "3",
                 "4"));
-        List<String> callback = List.of("1",
+        List<String> callback = List.of(
+                "1",
                 "2",
                 "3",
                 "4");
@@ -30,6 +34,12 @@ public class CountSience implements Update {
                     sendMessage = BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(),
                             "Обери к-сть знаків після коми");
                     sendMessage.setReplyMarkup(inlineKeyboardMarkup);
+                    try {
+                        Whiter.white(update.getCallbackQuery().getMessage().getChatId(), update.getCallbackQuery().getData());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
                     return sendMessage;
                 }
             }
@@ -42,3 +52,4 @@ public class CountSience implements Update {
         return sendMessage;
     }
 }
+
