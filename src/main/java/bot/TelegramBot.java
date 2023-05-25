@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.telegram.telegrambots.meta.api.methods.ParseMode;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -70,18 +68,6 @@ public class TelegramBot extends TelegramLongPollingBot {
             if (data.equals(PageLabels.banksLabel)) {
                 try {
                     execute(new BankPage().getUpdate(update));
-                } catch (TelegramApiException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-
-        /*  to open Settings for number of signs after comma*/
-        if (update.hasCallbackQuery()) {
-            String data = update.getCallbackQuery().getData();
-            if (data.equals(PageLabels.commaSignsLabel)) {
-                try {
-                    execute(new CountSience().getUpdate(update));
                 } catch (TelegramApiException e) {
                     throw new RuntimeException(e);
                 }
