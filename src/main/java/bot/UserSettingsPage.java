@@ -22,8 +22,6 @@ public class UserSettingsPage implements Update {
                     PageLabels.banksLabel,
                     PageLabels.currenciesLabel,
                     PageLabels.timeLabel);
-        System.out.println(nameOfButtons);
-        System.out.println(callback);
 
         InlineKeyboardMarkup inlineKeyboardMarkup = ButtonService.sendButtonMessage(nameOfButtons, callback);
         SendMessage sendMessage = BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(), "Обери налаштування:");

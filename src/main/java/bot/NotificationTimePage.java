@@ -36,8 +36,7 @@ public class NotificationTimePage implements Update {
                 PageLabels.notificationTime17,
                 PageLabels.notificationTime18,
                 PageLabels.notificationTimeOff);
-        System.out.println(nameOfButtons);
-        System.out.println(callback);
+
 
         InlineKeyboardMarkup inlineKeyboardMarkup = ButtonService.sendButtonMessage(nameOfButtons, callback);
         SendMessage sendMessage = BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(), "Обери годину, о котрій щоденно отримуватимеш актуальний курс валют:");

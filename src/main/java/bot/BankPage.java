@@ -20,8 +20,7 @@ public class BankPage implements Update {
                 PageLabels.bankNBULabel,
                 PageLabels.bankPrivatLabel,
                 PageLabels.bankMonoLabel);
-        System.out.println(nameOfButtons);
-        System.out.println(callback);
+
 
         InlineKeyboardMarkup inlineKeyboardMarkup = ButtonService.sendButtonMessage(nameOfButtons, callback);
         SendMessage sendMessage = BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(), "Обери банк, у якого хочеш  дізнатися курс валют:");
