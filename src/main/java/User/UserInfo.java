@@ -10,7 +10,6 @@ public class UserInfo {
         User user = new User(chatId, callbackQuery);
         List<User> users = new ArrayList<>();
         users.add(user);
-        System.out.println(users);
         return users;
     }
 }
