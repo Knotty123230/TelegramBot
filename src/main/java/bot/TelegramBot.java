@@ -1,5 +1,7 @@
 package bot;
+
 import button.service.ButtonService;
+import constants.PageLabels;
 import lombok.Getter;
 import lombok.Setter;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -9,9 +11,10 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
-import service.BotService;
+
 
 import java.util.List;
+
 import static service.BotService.sendPhoto;
 
 
@@ -31,11 +34,11 @@ public class TelegramBot extends TelegramLongPollingBot {
         this.username = username;
     }
 
+
+
     @Override
     public void onUpdateReceived(Update update) {
 
-        if (update.hasMessage()){
-            if (update.getMessage().getText().equals("/start")){
                 try {
                     execute(new StartMessage().getUpdate(update));
                     SendPhoto sendPhoto = sendPhoto(update.getMessage().getChatId(), "photo/photo.jpg");
@@ -45,20 +48,29 @@ public class TelegramBot extends TelegramLongPollingBot {
                     throw new RuntimeException(e);
                 }
             }
-        }else if (update.hasCallbackQuery()){
-            try {
-                    Message execute = execute(new CountSince().getUpdate(update));
-                    execute(BotService.deleteMessage(execute.getChatId().toString(), execute.getMessageId()));
-            } catch (TelegramApiException e) {
+
                     throw new RuntimeException(e);
             }
         }
 
+        /*  to open Settings to choose time for notification */
+        if (update.hasCallbackQuery()) {
+            String data = update.getCallbackQuery().getData();
+            if (data.equals(PageLabels.timeLabel)) {
+                try {
+                    execute(new NotificationTimePage().getUpdate(update));
+                } catch (TelegramApiException e) {
+                    throw new RuntimeException(e);
+                }
             }
-    public  void botConnect() throws TelegramApiException {
+        }
+    }
+
+    public void botConnect() throws TelegramApiException {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
         telegramBotsApi.registerBot(this);
     }
+
 
     @Override
     public String getBotUsername() {
