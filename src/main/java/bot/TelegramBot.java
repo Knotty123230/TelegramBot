@@ -7,9 +7,11 @@ import lombok.Setter;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+
 
 import java.util.List;
 
@@ -36,8 +38,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        if (update.hasMessage()) {
-            if (update.getMessage().getText().equals("/start")) {
+
                 try {
                     execute(new StartMessage().getUpdate(update));
                     SendPhoto sendPhoto = sendPhoto(update.getMessage().getChatId(), "photo/photo.jpg");
@@ -47,43 +48,8 @@ public class TelegramBot extends TelegramLongPollingBot {
                     throw new RuntimeException(e);
                 }
             }
-        }
 
-        /*  to open User Settings*/
-        if (update.hasCallbackQuery()) {
-            String data = update.getCallbackQuery().getData();
-            if (data.equals("Start")) {
-                try {
-                    execute(new UserSettingsPage().getUpdate(update));
-                } catch (TelegramApiException e) {
                     throw new RuntimeException(e);
-                }
-            }
-        }
-
-
-        /*  to open bank page */
-        if (update.hasCallbackQuery()) {
-            String data = update.getCallbackQuery().getData();
-            if (data.equals(PageLabels.banksLabel)) {
-                try {
-                    execute(new BankPage().getUpdate(update));
-                } catch (TelegramApiException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-
-
-        /*  to open Settings to choose currencies */
-        if (update.hasCallbackQuery()) {
-            String data = update.getCallbackQuery().getData();
-            if (data.equals(PageLabels.currenciesLabel)) {
-                try {
-                    execute(new CurrencyPage().getUpdate(update));
-                } catch (TelegramApiException e) {
-                    throw new RuntimeException(e);
-                }
             }
         }
 

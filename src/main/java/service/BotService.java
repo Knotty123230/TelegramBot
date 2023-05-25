@@ -2,8 +2,8 @@ package service;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
-
 import java.io.File;
 
 public class BotService {
@@ -19,5 +19,9 @@ public class BotService {
         message.setChatId(id);
         message.setText(text);
         return message;
+    }
+    public static DeleteMessage deleteMessage(String chatId, Integer messageId){
+        messageId -= 1;
+        return new DeleteMessage(chatId, messageId);
     }
 }
