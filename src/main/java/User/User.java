@@ -1,8 +1,5 @@
 package User;
 
-import lombok.Getter;
-import lombok.Setter;
-
 public class User {
 
     private long chatid;
