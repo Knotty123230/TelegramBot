@@ -12,7 +12,7 @@ import java.util.List;
 public class UserSettingsPage implements Update {
     @Override
     public SendMessage getUpdate(org.telegram.telegrambots.meta.api.objects.Update update) {
-        List<String> nameOfButtons = List.of("1",
+        List<String> nameOfButtons = List.of(
                 "Кількість знаків після коми",
                         "Банк",
                         "Валюти",
@@ -26,7 +26,7 @@ public class UserSettingsPage implements Update {
         System.out.println(callback);
 
         InlineKeyboardMarkup inlineKeyboardMarkup = ButtonService.sendButtonMessage(nameOfButtons, callback);
-        SendMessage sendMessage = BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(), "Обери к-сть знаків після коми");
+        SendMessage sendMessage = BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(), "Обери налаштування:");
         sendMessage.setReplyMarkup(inlineKeyboardMarkup);
         return sendMessage;
     }
