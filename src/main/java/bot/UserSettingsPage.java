@@ -18,10 +18,10 @@ public class UserSettingsPage implements Update {
                         "Валюти",
                         "Час оповіщень");
         List<String> callback = List.of(
-               PageLabels.commaSignsLabel,
-                               PageLabels.banksLabel,
-                               PageLabels.currenciesLabel,
-                                PageLabels.timeLabel);
+                    PageLabels.commaSignsLabel,
+                    PageLabels.banksLabel,
+                    PageLabels.currenciesLabel,
+                    PageLabels.timeLabel);
         System.out.println(nameOfButtons);
         System.out.println(callback);
 

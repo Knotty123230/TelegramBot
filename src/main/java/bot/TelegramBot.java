@@ -1,6 +1,7 @@
 package bot;
 
 import button.service.ButtonService;
+import constants.PageLabels;
 import lombok.Getter;
 import lombok.Setter;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -44,11 +45,64 @@ public class TelegramBot extends TelegramLongPollingBot {
                     throw new RuntimeException(e);
                 }
             }
-        } else if (update.hasCallbackQuery()) {
+        }
+
+        /*  to open User Settings*/
+        if (update.hasCallbackQuery()) {
             String data = update.getCallbackQuery().getData();
             if (data.equals("Start")) {
                 try {
+                    execute(new UserSettingsPage().getUpdate(update));
+                } catch (TelegramApiException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+
+        /*  to open bank page */
+        if (update.hasCallbackQuery()) {
+            String data = update.getCallbackQuery().getData();
+            if (data.equals(PageLabels.banksLabel)) {
+                try {
+                    execute(new BankPage().getUpdate(update));
+                } catch (TelegramApiException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+        /*  to open Settings for number of signs after comma*/
+        if (update.hasCallbackQuery()) {
+            String data = update.getCallbackQuery().getData();
+            if (data.equals(PageLabels.commaSignsLabel)) {
+                try {
                     execute(new CountSience().getUpdate(update));
+                } catch (TelegramApiException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+
+        /*  to open Settings to choose currencies */
+        if (update.hasCallbackQuery()) {
+            String data = update.getCallbackQuery().getData();
+            if (data.equals(PageLabels.currenciesLabel)) {
+                try {
+                    execute(new CurrencyPage().getUpdate(update));
+                } catch (TelegramApiException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+        /*  to open Settings to choose time for notification */
+        if (update.hasCallbackQuery()) {
+            String data = update.getCallbackQuery().getData();
+            if (data.equals(PageLabels.timeLabel)) {
+                try {
+                    execute(new NotificationTimePage().getUpdate(update));
                 } catch (TelegramApiException e) {
                     throw new RuntimeException(e);
                 }
