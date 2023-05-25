@@ -1,21 +1,16 @@
 package bot;
-import constants.PageLabels;
+
+import button.service.ButtonService;
 import lombok.Getter;
 import lombok.Setter;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
-import uIElements.buttons.ButtonService;
-import uIElements.buttons.CurrencyBotButton;
-import uIElements.messages.CurrencyBotMessage;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import static service.BotService.sendPhoto;
 
@@ -53,22 +48,22 @@ public class TelegramBot extends TelegramLongPollingBot {
             String data = update.getCallbackQuery().getData();
             if (data.equals("Start")) {
                 try {
-                    execute(new UserSettingsPage().getUpdate(update));
+                    execute(new CountSience().getUpdate(update));
                 } catch (TelegramApiException e) {
                     throw new RuntimeException(e);
                 }
             }
         }
-
-
     }
-        public  void botConnect() throws TelegramApiException {
-            TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-            telegramBotsApi.registerBot(this);
-        }
 
-        @Override
-        public String getBotUsername() {
-            return username;
-        }
+    public void botConnect() throws TelegramApiException {
+        TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
+        telegramBotsApi.registerBot(this);
+    }
+
+
+    @Override
+    public String getBotUsername() {
+        return username;
+    }
 }
