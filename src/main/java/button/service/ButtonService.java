@@ -20,7 +20,7 @@ public class ButtonService {
             row.add(inlineKeyboardButton);
             keyboard.add(row);
             keyboardMarkup.setKeyboard(keyboard);
-        }else {
+        } else {
             for (int i = 0; i < nameButton.size(); i++) {
                 inlineKeyboardButton = new InlineKeyboardButton();
                 inlineKeyboardButton.setText(nameButton.get(i));
