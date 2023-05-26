@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -18,8 +19,7 @@ import java.util.List;
 
 import static service.BotService.sendPhoto;
 
-
-public class TelegramBot extends TelegramLongPollingBot{
+public class TelegramBot extends TelegramLongPollingBot {
 
 
     @Getter
@@ -39,6 +39,7 @@ public class TelegramBot extends TelegramLongPollingBot{
 
     @Override
     public void onUpdateReceived(Update update) {
+        
         String save = "";
         if (update.hasMessage() && update.getMessage().hasText()){
             Long chatId = update.getMessage().getChatId();
@@ -53,7 +54,7 @@ public class TelegramBot extends TelegramLongPollingBot{
                     throw new RuntimeException(e);
                 }
             }
-        }else if (update.hasCallbackQuery()){
+        } else if (update.hasCallbackQuery()) {
             String data = update.getCallbackQuery().getData();
             Long chatId = update.getCallbackQuery().getMessage().getChatId();
             Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
@@ -84,6 +85,7 @@ public class TelegramBot extends TelegramLongPollingBot{
                 case "start" -> {
                     try {
                         execute(new UserSettingsPage().getUpdate(update));
+
                     } catch (TelegramApiException e) {
                         throw new RuntimeException(e);
                     }
@@ -118,8 +120,10 @@ public class TelegramBot extends TelegramLongPollingBot{
 
                 }
 
+
             }
         }
+    }
 
     public void botConnect() throws TelegramApiException {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
