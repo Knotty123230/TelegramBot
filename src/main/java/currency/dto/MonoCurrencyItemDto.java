@@ -1,5 +1,6 @@
+package currency.dto;
 
-import lombok.Data;
+import currency.MonoCurrency;
 
 public class MonoCurrencyItemDto {
     private int currencyCodeA ;

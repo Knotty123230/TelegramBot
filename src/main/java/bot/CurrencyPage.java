@@ -1,48 +1,65 @@
 package bot;
-
-import constants.PageLabels;
+import User.User;
+import User.UserInfo;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
+import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import service.BotService;
-import service.Update;
-import uIElements.buttons.ButtonService;
-
-import java.util.*;
-
-public class CurrencyPage implements Update {
-        @Override
-        public SendMessage getUpdate(org.telegram.telegrambots.meta.api.objects.Update update) {
-            List<String> nameOfButtons = new ArrayList<>(List.of(
-                    "USD",
-                    "EUR",
-                    "OK"));
-            List<String> callback = List.of(
-                    PageLabels.currUsdLabel,
-                    PageLabels.currEurLabel,
-                    "OK"
-            );
-            System.out.println(nameOfButtons);
-            System.out.println(callback);
-            SendMessage sendMessage = null;
-
-            for (int i = 0; i < nameOfButtons.size(); i++) {
-                if (update.getCallbackQuery().getData().equals(callback.get(i))) {
-                    String buttonText = nameOfButtons.get(i);
-                    if (buttonText.endsWith(" ✅")) {
-                        nameOfButtons.set(i, buttonText.substring(0, buttonText.length() - 2));
-                    } else {
-                        nameOfButtons.set(i, buttonText + " ✅");
-                        sendMessage = BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(), "Обери валюту (можеш вибрати декілька):");
-                        InlineKeyboardMarkup inlineKeyboardMarkup = ButtonService.sendButtonMessage(nameOfButtons, callback);
-                        sendMessage.setReplyMarkup(inlineKeyboardMarkup);
-                    }
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+public class CurrencyPage {
+    private static final Set<String> selectedCurrencies = new HashSet<>();
+    public static EditMessageReplyMarkup getUpdate(Update update) {
+        List<String> currencies = List.of("USD", "EUR");
+        SendMessage sendMessage;
+        List<User> info = null;
+        EditMessageReplyMarkup editMarkup = null;
+        if (update.hasCallbackQuery()) {
+            String callbackData = update.getCallbackQuery().getData();
+            if (currencies.contains(callbackData)) {
+                if (selectedCurrencies.contains(callbackData)) {
+                    selectedCurrencies.remove(callbackData);
+                } else {
+                    selectedCurrencies.add(callbackData);
                 }
+                info = UserInfo.getInfo(update.getCallbackQuery().getMessage().getChatId(), callbackData);
             }
-
-            InlineKeyboardMarkup inlineKeyboardMarkup = ButtonService.sendButtonMessage(nameOfButtons, callback);
-            sendMessage = BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(), "Обери валюту (можеш вибрати декілька):");
-            sendMessage.setReplyMarkup(inlineKeyboardMarkup);
-
-            return sendMessage;
         }
+        String selectedCurrenciesText = selectedCurrencies.stream()
+                .collect(Collectors.joining(", "));
+        // Create buttons for currencies
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+        for (String currency : currencies) {
+            boolean isSelected = selectedCurrencies.contains(currency);
+            String buttonText = isSelected ? currency + ":белая_галочка:" : currency;
+            InlineKeyboardButton button = new InlineKeyboardButton(buttonText);
+            button.setCallbackData(currency);
+            List<InlineKeyboardButton> row = new ArrayList<>();
+            row.add(button);
+            keyboard.add(row);
+        }
+        // Add OK button
+        InlineKeyboardButton okButton = new InlineKeyboardButton("OK");
+        okButton.setCallbackData("OK");
+        List<InlineKeyboardButton> row = new ArrayList<>();
+        row.add(okButton);
+        keyboard.add(row);
+        InlineKeyboardMarkup replyMarkup = new InlineKeyboardMarkup();
+        replyMarkup.setKeyboard(keyboard);
+        if (update.getCallbackQuery() != null) {
+            editMarkup = new EditMessageReplyMarkup();
+            editMarkup.setChatId(update.getCallbackQuery().getMessage().getChatId());
+            editMarkup.setMessageId(update.getCallbackQuery().getMessage().getMessageId());
+            editMarkup.setReplyMarkup(replyMarkup);
+        }
+        String messageText = "Обери валюту (можеш вибрати декілька):\n\n" + selectedCurrenciesText;
+        sendMessage = new SendMessage();
+        sendMessage.setChatId(update.getCallbackQuery().getMessage().getChatId());
+        sendMessage.setText(messageText);
+        return editMarkup;
     }
+}

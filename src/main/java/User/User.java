@@ -2,8 +2,8 @@ package User;
 
 public class User {
 
-    private long chatid;
-    private String callbackDataSince;
+    private final long chatid;
+    private final String callbackDataSince;
 
     public User(long chatid, String callbackQuery) {
         this.chatid = chatid;

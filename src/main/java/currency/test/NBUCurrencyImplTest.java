@@ -1,4 +1,8 @@
-package org.example.test;
+package currency.test;
+
+import currency.Currency;
+import currency.CurrencyService;
+import currency.inpl.NBUCurrencyImpl;
 
 public class NBUCurrencyImplTest {
     public static void main(String[] args) {

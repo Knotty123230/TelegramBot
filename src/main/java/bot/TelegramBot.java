@@ -19,7 +19,7 @@ import java.util.List;
 import static service.BotService.sendPhoto;
 
 
-public class TelegramBot extends TelegramLongPollingBot {
+public class TelegramBot extends TelegramLongPollingBot{
 
 
     @Getter
@@ -60,7 +60,15 @@ public class TelegramBot extends TelegramLongPollingBot {
             switch (data) {
                 default -> {
                     try {
-                        execute(new CurrencyPage().getUpdate(update));
+                        execute(CurrencyPage.getUpdate(update));
+                    } catch (TelegramApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                case PageLabels.currUsdLabel,
+                        PageLabels.currEurLabel -> {
+                    try {
+                        execute(CurrenceEditPage.getUpdate(update));
                     } catch (TelegramApiException e) {
                         throw new RuntimeException(e);
                     }
@@ -89,14 +97,8 @@ public class TelegramBot extends TelegramLongPollingBot {
                     }
                     save = SaveButton.getSave(update);
                 }
-                case PageLabels.currenciesLabel -> {
-                    try {
-                        execute(new CurrencyPage().getUpdate(update));
-                    } catch (TelegramApiException e) {
-                        throw new RuntimeException(e);
-                    }
-                 }
-                 case "1" -> {
+
+                 case "1", "2", "3", "4" -> {
                     try {
                         execute(new CountSince().getUpdate(update));
                         save = SaveButton.getSave(update);
@@ -105,33 +107,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                         throw new RuntimeException(e);
                     }
                 }
-                case "2" -> {
-                    try {
-                        execute(new CountSince().getUpdate(update));
-                        save = SaveButton.getSave(update);
-                        execute(BotService.deleteMessage(chatId.toString(), messageId));
-                    } catch (TelegramApiException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                case "3" -> {
-                    try {
-                        execute(new CountSince().getUpdate(update));
-                        save = SaveButton.getSave(update);
-                        execute(BotService.deleteMessage(chatId.toString(), messageId));
-                    } catch (TelegramApiException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                case "4" -> {
-                    try {
-                        execute(new CountSince().getUpdate(update));
-                        save = SaveButton.getSave(update);
-                        execute(BotService.deleteMessage(chatId.toString(), messageId));
-                    } catch (TelegramApiException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
+
                 }
 
             }

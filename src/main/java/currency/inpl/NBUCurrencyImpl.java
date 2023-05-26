@@ -1,8 +1,11 @@
-
+package currency.inpl;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import currency.Currency;
+import currency.CurrencyService;
+import currency.dto.NBUCurrencyItemDto;
 import org.jsoup.Jsoup;
 
 import java.io.IOException;
@@ -28,7 +31,7 @@ public class NBUCurrencyImpl implements CurrencyService {
         List<NBUCurrencyItemDto> items = new Gson().fromJson(json,type);
         return items.stream()
                 .filter(it -> it.getCc() == currency)
-                .map(it-> it.getRate())
+                .map(NBUCurrencyItemDto::getRate)
                 .findFirst()
                 .orElseThrow();
     }

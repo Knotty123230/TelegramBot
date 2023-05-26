@@ -1,4 +1,4 @@
-
+package currency;
 
 public enum MonoCurrency {
 

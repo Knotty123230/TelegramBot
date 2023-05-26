@@ -1,6 +1,4 @@
-package org.example.test;
-
-import org.example.test.Currency;
+package currency;
 
 public interface CurrencyService {
     double getCurrenceRate(Currency currency);

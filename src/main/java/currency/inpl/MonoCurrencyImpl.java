@@ -1,13 +1,16 @@
+package currency.inpl;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import currency.MonoCurrency;
+import currency.dto.MonoCurrencyItemDto;
 import org.jsoup.Jsoup;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
 
-public class MonoCurrencyImpl implements CurrencyService {
-    @Override
+public class MonoCurrencyImpl {
     public double getCurrenceRate(MonoCurrency currency) {
         String url = "https://api.monobank.ua/bank/currency";
 

@@ -1,4 +1,4 @@
-package org.example.test;
+package currency;
 
 public enum Currency {
     USD,
