@@ -14,11 +14,13 @@ public class BankPage implements Update {
         List<String> nameOfButtons = new java.util.ArrayList<>(List.of(
                 "НБУ",
                 "ПриватБанк",
-                "Монобанк"));
+                "Монобанк",
+                "OK"));
         List<String> callback = List.of(
                 PageLabels.bankNBULabel,
                 PageLabels.bankPrivatLabel,
-                PageLabels.bankMonoLabel);
+                PageLabels.bankMonoLabel,
+                "OK");
 
         SendMessage sendMessage = null;
         if (update.hasCallbackQuery()) {
