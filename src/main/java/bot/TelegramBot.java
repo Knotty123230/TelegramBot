@@ -60,15 +60,23 @@ public class TelegramBot extends TelegramLongPollingBot{
             switch (data) {
                 default -> {
                     try {
+                        execute(CurrenceEditPage.getUpdate(update));
+                    } catch (TelegramApiException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                }
+                case PageLabels.currenciesLabel -> {
+                    try {
                         execute(CurrencyPage.getUpdate(update));
                     } catch (TelegramApiException e) {
                         throw new RuntimeException(e);
                     }
+
                 }
-                case PageLabels.currUsdLabel,
-                        PageLabels.currEurLabel -> {
+                case "OK" -> {
                     try {
-                        execute(CurrenceEditPage.getUpdate(update));
+                        execute(new OkButton().getUpdate(update));
                     } catch (TelegramApiException e) {
                         throw new RuntimeException(e);
                     }
@@ -83,11 +91,11 @@ public class TelegramBot extends TelegramLongPollingBot{
                 case PageLabels.banksLabel -> {
                     try {
                         execute(new BankPage().getUpdate(update));
+                        execute(BotService.deleteMessage(chatId.toString(), messageId));
                     } catch (TelegramApiException e) {
                         throw new RuntimeException(e);
                     }
                 }
-
 
                 case  PageLabels.commaSignsLabel -> {
                     try {
@@ -123,4 +131,6 @@ public class TelegramBot extends TelegramLongPollingBot{
     public String getBotUsername() {
         return username;
     }
+
+
 }
