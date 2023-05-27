@@ -1,15 +1,12 @@
 package bot;
 
-import button.service.SaveButton;
-import User.Whiter;
+
 import button.service.ButtonService;
 import constants.PageLabels;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import service.BotService;
 import service.Update;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,14 +33,6 @@ public class CountSince implements Update {
                     sendMessage = BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(),
                             "Обери к-сть знаків після коми");
                     sendMessage.setReplyMarkup(inlineKeyboardMarkup);
-
-                    try {
-                        Whiter.white(update.getCallbackQuery().getMessage().getChatId(), update.getCallbackQuery().getData());
-                        System.out.println("Reader.getSince(update) = " + SaveButton.getSave(update));
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-
                 }
             }
         if (update.getCallbackQuery().getData().equals(PageLabels.commaSignsLabel)){

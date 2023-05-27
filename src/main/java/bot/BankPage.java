@@ -22,27 +22,39 @@ public class BankPage implements Update {
                 PageLabels.bankMonoLabel,
                 "OK");
 
-        SendMessage sendMessage = null;
+        SendMessage sendMessage;
+
+
+        nameOfButtons.set(0, nameOfButtons.get(0) + "✅");
+        InlineKeyboardMarkup inlineKeyboardMarkup = button.service.ButtonService.sendButtonMessage(nameOfButtons, callback);
+        sendMessage = BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(),
+                "Обери банк:");
+        sendMessage.setReplyMarkup(inlineKeyboardMarkup);
+
         if (update.hasCallbackQuery()) {
             String callbackData = update.getCallbackQuery().getData();
             for (int i = 0; i < callback.size(); i++) {
                 if (callbackData.equals(callback.get(i))) {
                     nameOfButtons.set(i, nameOfButtons.get(i) + "✅");
-                    InlineKeyboardMarkup inlineKeyboardMarkup = button.service.ButtonService.sendButtonMessage(nameOfButtons, callback);
+                    inlineKeyboardMarkup = button.service.ButtonService.sendButtonMessage(nameOfButtons, callback);
                     sendMessage = BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(),
                             "Обери банк:");
                     sendMessage.setReplyMarkup(inlineKeyboardMarkup);
 
-
                 }
             }
+
+
             if (update.getCallbackQuery().getData().equals(PageLabels.banksLabel)) {
-                InlineKeyboardMarkup inlineKeyboardMarkup = ButtonService.sendButtonMessage(nameOfButtons, callback);
+                inlineKeyboardMarkup = ButtonService.sendButtonMessage(nameOfButtons, callback);
                 sendMessage = BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(), "Обери банк:");
                 sendMessage.setReplyMarkup(inlineKeyboardMarkup);
             }
+
+
         }
         return sendMessage;
     }
 }
+
 
