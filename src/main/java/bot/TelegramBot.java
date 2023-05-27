@@ -111,6 +111,15 @@ public class TelegramBot extends TelegramLongPollingBot {
                         save = SaveButton.getSave(update);
                     }
 
+                    case PageLabels.timeLabel -> {
+                        try {
+                            execute(new NotificationTimePage().getUpdate(update));
+                        } catch (TelegramApiException e) {
+                            throw new RuntimeException(e);
+                        }
+                        save = SaveButton.getSave(update);
+                    }
+
                     case "1", "2", "3", "4" -> {
                         try {
                             execute(new CountSince().getUpdate(update));
