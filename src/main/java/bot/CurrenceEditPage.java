@@ -19,15 +19,14 @@ public class CurrenceEditPage {
             InlineKeyboardMarkup replyMarkup = update.getCallbackQuery().getMessage().getReplyMarkup();
             List<List<InlineKeyboardButton>> keyboard = replyMarkup.getKeyboard();
             for (List<InlineKeyboardButton> inlineKeyboardButtons : keyboard) {
-                for (int i = 0; i < inlineKeyboardButtons.size(); i++) {
-                    if (inlineKeyboardButtons.get(i).getCallbackData().equals(update.getCallbackQuery().getData())) {
-                        if (inlineKeyboardButtons.get(i).getCallbackData().contains("✅")) {
-                            inlineKeyboardButtons.get(i).setText(inlineKeyboardButtons.get(i).getText().replace(" ✅", ""));
-                            inlineKeyboardButtons.get(i).setCallbackData(inlineKeyboardButtons.get(i).getCallbackData().replace(" ✅", ""));
+                for (InlineKeyboardButton inlineKeyboardButton : inlineKeyboardButtons) {
+                    if (inlineKeyboardButton.getCallbackData().equals(update.getCallbackQuery().getData())) {
+                        if (inlineKeyboardButton.getCallbackData().contains("✅")) {
+                            inlineKeyboardButton.setText(inlineKeyboardButton.getText().replace(" ✅", ""));
+                            inlineKeyboardButton.setCallbackData(inlineKeyboardButton.getCallbackData().replace(" ✅", ""));
                         } else {
-                            inlineKeyboardButtons.get(i).setText(inlineKeyboardButtons.get(i).getText() + " ✅");
-                            inlineKeyboardButtons.get(i).setCallbackData(inlineKeyboardButtons.get(i).getCallbackData() + " ✅");
-
+                            inlineKeyboardButton.setText(inlineKeyboardButton.getText() + " ✅");
+                            inlineKeyboardButton.setCallbackData(inlineKeyboardButton.getCallbackData() + " ✅");
                         }
 
                         replyMarkup.setKeyboard(keyboard);
