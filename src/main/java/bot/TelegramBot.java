@@ -40,21 +40,23 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         String save = "";
         if (update.hasMessage()) {
-            if (update.getMessage().getText().equals("/start")) {
-                if (update.hasMessage()) {
-                    if (update.getMessage().getText().equals("/start")) {
-                        try {
-                            execute(new StartMessage().getUpdate(update));
-                            SendPhoto sendPhoto = sendPhoto(update.getMessage().getChatId(), "photo/photo.jpg");
-                            sendPhoto.setReplyMarkup(ButtonService.sendButtonMessage(List.of("Start"), List.of("Start")));
-                            sendPhoto.setReplyMarkup(ButtonService.sendButtonMessage(List.of("Отримати інфо", "Налаштування"),
-                                    List.of("Отримати інфо", "Налаштування")));
-                            execute(sendPhoto);
-                        } catch (TelegramApiException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
+            String measage = update.getMessage().getText();
+
+
+
+            if (measage.equals("/start")) {
+                try {
+                    execute(new StartMessage().getUpdate(update));
+                    SendPhoto sendPhoto = sendPhoto(update.getMessage().getChatId(), "photo/photo.jpg");
+                    sendPhoto.setReplyMarkup(ButtonService.sendButtonMessage(List.of("Start"), List.of("Start")));
+                    sendPhoto.setReplyMarkup(ButtonService.sendButtonMessage(List.of("Отримати інфо", "Налаштування"),
+                            List.of("Отримати інфо", "Налаштування")));
+                    execute(sendPhoto);
+                } catch (TelegramApiException e) {
+                    throw new RuntimeException(e);
                 }
+            } else {
+                System.out.println(measage);
             }
         }else if (update.hasCallbackQuery()) {
                 String data = update.getCallbackQuery().getData();
@@ -121,7 +123,14 @@ public class TelegramBot extends TelegramLongPollingBot {
                         }
                     }
 
-                    
+                    case PageLabels.timeLabel -> {
+                        try {
+                            execute(new NotificationTimePage().getUpdate(update));
+                        } catch (TelegramApiException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+
                 }
 
 
