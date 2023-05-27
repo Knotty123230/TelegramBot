@@ -23,14 +23,14 @@ public class MessageWithSave {
         double currenceRate;
         System.out.println("я в методі");
         switch (buttonSigns) {
-            case "1" -> decimalFormat = new DecimalFormat("#.0");
-            case "2" -> decimalFormat = new DecimalFormat("#.00");
-            case "3" -> decimalFormat = new DecimalFormat("#.000");
-            case "4" -> decimalFormat = new DecimalFormat("#.0000");
+            case "1 " -> decimalFormat = new DecimalFormat("#.0");
+            case "2 " -> decimalFormat = new DecimalFormat("#.00");
+            case "3 " -> decimalFormat = new DecimalFormat("#.000");
+            case "4 " -> decimalFormat = new DecimalFormat("#.0000");
         }
 
         switch (buttonBank) {
-            case "Монобанк" -> {
+            case "Монобанк " -> {
                 monoCurrency = new MonoCurrencyImpl();
                 currenceRate = monoCurrency.getCurrenceRate(switch (buttonCurrency) {
                     case "USD" + " ✅":
@@ -46,7 +46,7 @@ public class MessageWithSave {
                         "Курс долара до гривні\n" +
                                 "Покупка: " + formattedRate);
             }
-            case "ПриватБанк" -> {
+            case "ПриватБанк " -> {
                 privatCurrency = new PrivatCurrencyImpl();
                 currenceRate = privatCurrency.getCurrenceRate(switch (buttonCurrency) {
                     case "USD ✅":
@@ -61,7 +61,7 @@ public class MessageWithSave {
                         "Курс долара до гривні\n" +
                                 "Покупка: " + formattedRate);
             }
-            case "НБУ" -> {
+            case "НБУ " -> {
                 nbuCurrency = new NBUCurrencyImpl();
                 currenceRate = nbuCurrency.getCurrenceRate(switch (buttonCurrency) {
                     case "USD" + " ✅":
