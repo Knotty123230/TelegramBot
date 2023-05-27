@@ -1,6 +1,7 @@
 package currency.test;
 
-import currency.MonoCurrency;
+import currency.Currency;
+
 import currency.inpl.MonoCurrencyImpl;
 
 public class MonoCurrencyImplTest {
@@ -8,14 +9,15 @@ public class MonoCurrencyImplTest {
         MonoCurrencyImpl monoCurrency = new MonoCurrencyImpl();
 
         try {
-            double rateEUR = monoCurrency.getCurrenceRate(MonoCurrency.EUR);
-            System.out.println("EUR to UAH rate: " + rateEUR);
+            double rateEUR = monoCurrency.getCurrenceRate(Currency.EUR);
+            double sellEUR = monoCurrency.getCurrenceRateSell(Currency.EUR);
+            System.out.println("EUR to UAH rate: " + rateEUR + " EUR to UAH sell:  " + sellEUR );
 
-            double rateUSD = monoCurrency.getCurrenceRate(MonoCurrency.USD);
-            System.out.println("USD to UAH rate: " + rateUSD);
+//            double rateUSD = monoCurrency.getCurrenceRate(MonoCurrency.USD);
+//            double sellUSD = monoCurrency.getCurrenceRateSell(MonoCurrency.USD);
+//            System.out.println("USD to UAH rate: " + rateUSD + " USD to UAH sell:  " + sellUSD );
 
-            double rateUAH = monoCurrency.getCurrenceRate(MonoCurrency.UAH);
-            System.out.println("UAH to UAH rate: " + rateUAH);
+
         } catch (Exception e) {
             System.out.println("Error occurred: " + e.getMessage());
         }

@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 
 import currency.Currency;
 import currency.CurrencyService;
+
 import currency.dto.NBUCurrencyItemDto;
 import org.jsoup.Jsoup;
 
@@ -34,6 +35,11 @@ public class NBUCurrencyImpl implements CurrencyService {
                 .map(NBUCurrencyItemDto::getRate)
                 .findFirst()
                 .orElseThrow();
+    }
+
+    @Override
+    public double getCurrenceRateSell(Currency currency) {
+        return 0;
     }
 
 

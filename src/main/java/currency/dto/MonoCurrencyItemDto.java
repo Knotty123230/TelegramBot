@@ -1,6 +1,6 @@
 package currency.dto;
 
-import currency.MonoCurrency;
+import currency.Currency;
 
 public class MonoCurrencyItemDto {
     private int currencyCodeA ;
@@ -11,14 +11,14 @@ public class MonoCurrencyItemDto {
     private float rateSell;
 
 
-    public MonoCurrency getCurrencyCodeA() {
-        return MonoCurrency.fromCode(currencyCodeA);
+    public Currency getCurrencyCodeA() {
+        return Currency.fromCode(currencyCodeA);
     }
 
 
 
-    public MonoCurrency getCurrencyCodeB() {
-        return MonoCurrency.fromCode(currencyCodeB);
+    public Currency getCurrencyCodeB() {
+        return Currency.fromCode(currencyCodeB);
     }
 
     public void setCurrencyCodeA(int currencyCodeA) {
