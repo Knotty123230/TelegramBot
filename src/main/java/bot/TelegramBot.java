@@ -134,11 +134,11 @@ public class TelegramBot extends TelegramLongPollingBot {
 
                     case PageLabels.timeLabel -> {
                         try {
-                            execute(new NotificationTimePage().getUpdate(update));
+                            execute(new KeyboardRow().getUpdate(update));
                         } catch (TelegramApiException e) {
                             throw new RuntimeException(e);
                         }
-                        save = SaveButton.getSave(update);
+                        buttonSince = SaveButton.getSave(update);
                     }
 
                     case "1", "2", "3", "4" -> {
