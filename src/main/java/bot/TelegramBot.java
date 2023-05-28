@@ -15,6 +15,7 @@ import service.BotService;
 import java.util.ArrayList;
 import java.util.List;
 
+import static constants.PageLabels.*;
 import static service.BotService.sendPhoto;
 
 public class TelegramBot extends TelegramLongPollingBot {
@@ -26,6 +27,37 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Getter
     @Setter
     private String username;
+    private final List<String> buttonsCurrency = new ArrayList<>(List.of(
+            "USD ✅",
+            "EUR",
+            "OK"
+    ));
+    private final List<String> buttonsSins = new ArrayList<>(List.of(
+            "1 ✅",
+            "2",
+            "3",
+            "4"));
+    private final List<String> buttonsBank = new ArrayList<>(List.of(
+            "НБУ",
+            "ПриватБанк ✅",
+            "Монобанк",
+            "OK"));
+    private final List<String> queryCurrency = new ArrayList<>(List.of(
+            currUsdLabel + " ✅",
+            currEurLabel,
+            "OK"
+    ));
+    private final List<String> queryBank = new ArrayList<>(List.of(
+            PageLabels.bankNBULabel,
+            PageLabels.bankPrivatLabel,
+            PageLabels.bankMonoLabel,
+            "OK"));
+    private final List<String> querySins = new ArrayList<>(List.of(
+            "1",
+            "2",
+            "3",
+            "4"));
+
     private String buttonCurrence = "";
     private String buttonSince = "";
     private String buttonBank = "";
@@ -57,108 +89,115 @@ public class TelegramBot extends TelegramLongPollingBot {
                     }
                 }
             }
-        }else if (update.hasCallbackQuery()) {
+        } else if (update.hasCallbackQuery()) {
             String data = update.getCallbackQuery().getData();
-                Long chatId = update.getCallbackQuery().getMessage().getChatId();
-                Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
-                switch (data) {
-                    case "Отримати інфо" -> {
-                        System.out.println(buttonSince);
-                        System.out.println(buttonCurrence);
-                        System.out.println(buttonBank);
-                        if (!buttonSince.isEmpty()){
-                            System.out.println("я тут");
+            Long chatId = update.getCallbackQuery().getMessage().getChatId();
+            Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
+            switch (data) {
+                case "Отримати інфо" -> {
+                    System.out.println(buttonSince);
+                    System.out.println(buttonCurrence);
+                    System.out.println(buttonBank);
+                    if (!buttonSince.isEmpty()) {
+                        System.out.println("я тут");
+                        try {
+                            execute(new MessageWithSave().getUpdate(buttonSince, buttonBank, buttonCurrence, update));
+                        } catch (TelegramApiException e) {
+                            throw new RuntimeException(e);
+                        }
+                    } else {
+                        try {
+                            execute(new ButtonInfoDefault().getUpdate(update));
+                        } catch (TelegramApiException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+                  default -> throw new RuntimeException();
+
+                case "Налаштування", "start" -> {
+                    try {
+                        execute(new UserSettingsPage().getUpdate(update));
+                    } catch (TelegramApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                case currenciesLabel, currUsdLabel,currEurLabel,currUsdLabel + " ✅",currEurLabel + " ✅"   -> {
+                        if (data.equals(currenciesLabel)){
                             try {
-                                execute(new MessageWithSave().getUpdate(buttonSince, buttonBank, buttonCurrence, update));
+                            execute(CurrencyPage.editMessage(buttonsCurrency, queryCurrency, update));
+                        } catch (TelegramApiException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }else {
+                            try {
+                                execute(CurrenceEditPage.getUpdate(buttonsCurrency, queryCurrency, update));
                             } catch (TelegramApiException e) {
                                 throw new RuntimeException(e);
                             }
-                        }else {
-                            try {
-                                execute(new ButtonInfoDefault().getUpdate(update));
-                            } catch (TelegramApiException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                    }
-                    default -> {
-                        try {
-                            execute(CurrenceEditPage.getUpdate(update));
-                            buttonCurrence = SaveButtonCurrence.getButton(update);
-                        } catch (TelegramApiException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                    case "Налаштування", "start" -> {
-                        try {
-                            execute(new UserSettingsPage().getUpdate(update));
-                        } catch (TelegramApiException e) {
-                            throw new RuntimeException(e);
                         }
                     }
 
-
-                    case PageLabels.currenciesLabel -> {
-                        try {
-                            execute(CurrencyPage.getUpdate(update));
-                        } catch (TelegramApiException e) {
-                            throw new RuntimeException(e);
-                        }
-
+                case "OK" -> {
+                    try {
+                        execute(new OkButton().getUpdate(update));
+                    } catch (TelegramApiException e) {
+                        throw new RuntimeException(e);
                     }
-                    case "OK" -> {
-                        try {
-                            execute(new OkButton().getUpdate(update));
-                        } catch (TelegramApiException e) {
-                            throw new RuntimeException(e);
-                        }
+                }
+                case PageLabels.banksLabel -> {
+                    try {
+                        execute(new BankPage().getUpdate(buttonsBank, queryBank, update));
+                        execute(BotService.deleteMessage(chatId.toString(), messageId));
+                        buttonBank = SaveButton.getSave(update);
+                    } catch (TelegramApiException e) {
+                        throw new RuntimeException(e);
                     }
-                    case PageLabels.banksLabel, PageLabels.bankNBULabel, PageLabels.bankPrivatLabel, PageLabels.bankMonoLabel -> {
-                        try {
-                            execute(new BankPage().getUpdate(update));
-                            execute(BotService.deleteMessage(chatId.toString(), messageId));
-                            buttonBank = SaveButton.getSave(update);
-                        } catch (TelegramApiException e) {
-                            throw new RuntimeException(e);
-                        }
+                }
+                case PageLabels.bankNBULabel, PageLabels.bankPrivatLabel, PageLabels.bankMonoLabel -> {
+                    try {
+                        execute(new PageEdit().getUpdate(buttonsBank, queryBank, update));
+                    } catch (TelegramApiException e) {
+                        throw new RuntimeException(e);
                     }
-
-                    case PageLabels.commaSignsLabel -> {
-                        try {
-                            execute(new CountSince().getUpdate(update));
-                        } catch (TelegramApiException e) {
-                            throw new RuntimeException(e);
-                        }
-                        buttonSince = SaveButton.getSave(update);
-                    }
-
-                    case "1", "2", "3", "4" -> {
-                        try {
-                            execute(new CountSince().getUpdate(update));
-                            buttonSince = SaveButton.getSave(update);
-                            execute(BotService.deleteMessage(chatId.toString(), messageId));
-                        } catch (TelegramApiException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-
                 }
 
+                case PageLabels.commaSignsLabel -> {
+                    try {
+                        execute(new CountSince().getUpdate(buttonsSins, querySins, update));
+                    } catch (TelegramApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                    buttonSince = SaveButton.getSave(update);
+                }
+
+                case "1", "2", "3", "4" -> {
+                    try {
+                        execute(new PageEdit().getUpdate(buttonsSins, querySins, update));
+                        buttonSince = SaveButton.getSave(update);
+                        execute(BotService.deleteMessage(chatId.toString(), messageId));
+                    } catch (TelegramApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
 
             }
+
+
         }
-
-
-        public void botConnect () throws TelegramApiException {
-            TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-            telegramBotsApi.registerBot(this);
-        }
-
-
-        @Override
-        public String getBotUsername () {
-            return username;
-        }
-
-
     }
+
+
+    public void botConnect() throws TelegramApiException {
+        TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
+        telegramBotsApi.registerBot(this);
+    }
+
+
+    @Override
+    public String getBotUsername() {
+        return username;
+    }
+
+
+}
