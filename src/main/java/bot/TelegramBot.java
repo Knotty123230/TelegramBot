@@ -1,7 +1,7 @@
 package bot;
 
+import User.UserSettings;
 import button.service.ButtonService;
-import button.service.SaveButton;
 import constants.PageLabels;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +13,9 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import service.BotService;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static constants.PageLabels.*;
 import static service.BotService.sendPhoto;
@@ -27,36 +29,11 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Getter
     @Setter
     private String username;
-    private final List<String> buttonsCurrency = new ArrayList<>(List.of(
-            "USD ✅",
-            "EUR",
-            "OK"
-    ));
-    private final List<String> buttonsSins = new ArrayList<>(List.of(
-            "1 ✅",
-            "2",
-            "3",
-            "4"));
-    private final List<String> buttonsBank = new ArrayList<>(List.of(
-            "НБУ",
-            "ПриватБанк ✅",
-            "Монобанк",
-            "OK"));
-    private final List<String> queryCurrency = new ArrayList<>(List.of(
-            currUsdLabel + " ✅",
-            currEurLabel,
-            "OK"
-    ));
-    private final List<String> queryBank = new ArrayList<>(List.of(
-            PageLabels.bankNBULabel,
-            PageLabels.bankPrivatLabel,
-            PageLabels.bankMonoLabel,
-            "OK"));
-    private final List<String> querySins = new ArrayList<>(List.of(
-            "1",
-            "2",
-            "3",
-            "4"));
+    private final Map<Long, UserSettings> userSettingsMap = new HashMap<>();
+
+
+
+
 
 
     public TelegramBot(String botToken, String token, String username) {
@@ -87,13 +64,22 @@ public class TelegramBot extends TelegramLongPollingBot {
                 }
             }
         } else if (update.hasCallbackQuery()) {
+
             String data = update.getCallbackQuery().getData();
             Long chatId = update.getCallbackQuery().getMessage().getChatId();
             Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
+
+            UserSettings userSettings = userSettingsMap.get(chatId);
+            if (userSettings == null) {
+                userSettings = new UserSettings();
+                userSettingsMap.put(chatId, userSettings);
+            }
+
             switch (data) {
                 case "Отримати інфо" -> {
                         try {
-                            execute(new MessageWithSave().getUpdate(buttonsSins, buttonsBank, buttonsCurrency, update));
+                            execute(new MessageWithSave().getUpdate(userSettings.getButtonsSins(), userSettings.getButtonsBank(),
+                                    userSettings.getButtonsCurrency(), update));
                         } catch (TelegramApiException e) {
                             throw new RuntimeException(e);
                         }
@@ -111,13 +97,13 @@ public class TelegramBot extends TelegramLongPollingBot {
                 case currenciesLabel, currUsdLabel,currEurLabel,currUsdLabel + " ✅",currEurLabel + " ✅"   -> {
                         if (data.equals(currenciesLabel)){
                             try {
-                            execute(CurrencyPage.editMessage(buttonsCurrency, queryCurrency, update));
+                            execute(CurrencyPage.editMessage(userSettings.getButtonsCurrency(), userSettings.getQueryCurrency(), update));
                         } catch (TelegramApiException e) {
                             throw new RuntimeException(e);
                         }
                     }else {
                             try {
-                                execute(CurrenceEditPage.getUpdate(buttonsCurrency, queryCurrency, update));
+                                execute(CurrenceEditPage.getUpdate(userSettings.getButtonsCurrency(), userSettings.getQueryCurrency(), update));
                             } catch (TelegramApiException e) {
                                 throw new RuntimeException(e);
                             }
@@ -135,7 +121,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 }
                 case PageLabels.banksLabel -> {
                     try {
-                        execute(new BankPage().getUpdate(buttonsBank, queryBank, update));
+                        execute(new BankPage().getUpdate(userSettings.getButtonsBank(), userSettings.getQueryBank(), update));
                         execute(BotService.deleteMessage(chatId.toString(), messageId));
                     } catch (TelegramApiException e) {
                         throw new RuntimeException(e);
@@ -143,7 +129,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 }
                 case PageLabels.bankNBULabel, PageLabels.bankPrivatLabel, PageLabels.bankMonoLabel -> {
                     try {
-                        execute(new PageEdit().getUpdate(buttonsBank, queryBank, update));
+                        execute(new PageEdit().getUpdate(userSettings.getButtonsBank(), userSettings.getQueryBank(), update));
                         execute(BotService.deleteMessage(chatId.toString(), messageId));
                     } catch (TelegramApiException e) {
                         throw new RuntimeException(e);
@@ -152,7 +138,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
                 case PageLabels.commaSignsLabel -> {
                     try {
-                        execute(new CountSince().getUpdate(buttonsSins, querySins, update));
+                        execute(new CountSince().getUpdate(userSettings.getButtonsSins(), userSettings.getQuerySins(), update));
                     } catch (TelegramApiException e) {
                         throw new RuntimeException(e);
                     }
@@ -160,7 +146,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
                 case "1", "2", "3", "4" -> {
                     try {
-                        execute(new PageEdit().getUpdate(buttonsSins, querySins, update));
+                        execute(new PageEdit().getUpdate(userSettings.getButtonsSins(),userSettings.getQuerySins(), update));
                         execute(BotService.deleteMessage(chatId.toString(), messageId));
                     } catch (TelegramApiException e) {
                         throw new RuntimeException(e);

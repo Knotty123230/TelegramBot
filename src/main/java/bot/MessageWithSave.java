@@ -49,10 +49,10 @@ public class MessageWithSave {
                     double eurBuy = new MonoCurrencyImpl().getCurrenceRate(MonoCurrency.EUR);
                     double currenceRateSell = new MonoCurrencyImpl().getCurrenceRateSell(MonoCurrency.USD);
                     double currenceRateSell1 = new MonoCurrencyImpl().getCurrenceRateSell(MonoCurrency.EUR);
-                    String format = decimalFormat.format(usdBuy);
-                    String format1 = decimalFormat.format(eurBuy);
-                    String format2 = decimalFormat.format(currenceRateSell);
-                    String format3 = decimalFormat.format(currenceRateSell1);
+                    String format = decimalFormat != null ? decimalFormat.format(usdBuy) : null;
+                    String format1 = decimalFormat != null ? decimalFormat.format(eurBuy) : null;
+                    String format2 = decimalFormat != null ? decimalFormat.format(currenceRateSell) : null;
+                    String format3 = decimalFormat != null ? decimalFormat.format(currenceRateSell1) : null;
                     return BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(),
                             "Курс Монобанк USD EUR\n" +
                                     "USDBUY " + format + "\n" +
