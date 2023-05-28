@@ -10,7 +10,8 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
 
-public class MonoCurrencyImpl {
+public class MonoCurrencyImpl  {
+
     public double getCurrenceRate(MonoCurrency currency) {
         String url = "https://api.monobank.ua/bank/currency";
 
@@ -32,6 +33,32 @@ public class MonoCurrencyImpl {
                 .filter(it -> it.getCurrencyCodeA() == currency)
                 .filter(it -> it.getCurrencyCodeB() == MonoCurrency.UAH)
                 .map(MonoCurrencyItemDto::getRateBuy)
+                .findFirst()
+                .orElseThrow();
+
+    }
+
+    public double getCurrenceRateSell(MonoCurrency currency) {
+        String url = "https://api.monobank.ua/bank/currency";
+
+        String json = "";
+
+        try{
+            json = Jsoup.connect(url)
+                    .ignoreContentType(true)
+                    .get()
+                    .body()
+                    .text();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Type type = TypeToken.getParameterized(List.class, MonoCurrencyItemDto.class)
+                .getType();
+        List<MonoCurrencyItemDto> items = new Gson().fromJson(json,type);
+        return items.stream()
+                .filter(it -> it.getCurrencyCodeA() == currency)
+                .filter(it -> it.getCurrencyCodeB() == MonoCurrency.UAH)
+                .map(MonoCurrencyItemDto::getRateSell)
                 .findFirst()
                 .orElseThrow();
 

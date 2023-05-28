@@ -58,9 +58,6 @@ public class TelegramBot extends TelegramLongPollingBot {
             "3",
             "4"));
 
-    private String buttonCurrence = "";
-    private String buttonSince = "";
-    private String buttonBank = "";
 
     public TelegramBot(String botToken, String token, String username) {
         super(botToken);
@@ -95,24 +92,13 @@ public class TelegramBot extends TelegramLongPollingBot {
             Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
             switch (data) {
                 case "Отримати інфо" -> {
-                    System.out.println(buttonSince);
-                    System.out.println(buttonCurrence);
-                    System.out.println(buttonBank);
-                    if (!buttonSince.isEmpty()) {
-                        System.out.println("я тут");
                         try {
-                            execute(new MessageWithSave().getUpdate(buttonSince, buttonBank, buttonCurrence, update));
-                        } catch (TelegramApiException e) {
-                            throw new RuntimeException(e);
-                        }
-                    } else {
-                        try {
-                            execute(new ButtonInfoDefault().getUpdate(update));
+                            execute(new MessageWithSave().getUpdate(buttonsSins, buttonsBank, buttonsCurrency, update));
                         } catch (TelegramApiException e) {
                             throw new RuntimeException(e);
                         }
                     }
-                }
+
                   default -> throw new RuntimeException();
 
                 case "Налаштування", "start" -> {
@@ -141,6 +127,8 @@ public class TelegramBot extends TelegramLongPollingBot {
                 case "OK" -> {
                     try {
                         execute(new OkButton().getUpdate(update));
+                        execute(BotService.deleteMessage(update.getCallbackQuery().getMessage().getChatId().toString(),
+                                update.getCallbackQuery().getMessage().getMessageId()));
                     } catch (TelegramApiException e) {
                         throw new RuntimeException(e);
                     }
@@ -149,7 +137,6 @@ public class TelegramBot extends TelegramLongPollingBot {
                     try {
                         execute(new BankPage().getUpdate(buttonsBank, queryBank, update));
                         execute(BotService.deleteMessage(chatId.toString(), messageId));
-                        buttonBank = SaveButton.getSave(update);
                     } catch (TelegramApiException e) {
                         throw new RuntimeException(e);
                     }
@@ -157,6 +144,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 case PageLabels.bankNBULabel, PageLabels.bankPrivatLabel, PageLabels.bankMonoLabel -> {
                     try {
                         execute(new PageEdit().getUpdate(buttonsBank, queryBank, update));
+                        execute(BotService.deleteMessage(chatId.toString(), messageId));
                     } catch (TelegramApiException e) {
                         throw new RuntimeException(e);
                     }
@@ -168,13 +156,11 @@ public class TelegramBot extends TelegramLongPollingBot {
                     } catch (TelegramApiException e) {
                         throw new RuntimeException(e);
                     }
-                    buttonSince = SaveButton.getSave(update);
                 }
 
                 case "1", "2", "3", "4" -> {
                     try {
                         execute(new PageEdit().getUpdate(buttonsSins, querySins, update));
-                        buttonSince = SaveButton.getSave(update);
                         execute(BotService.deleteMessage(chatId.toString(), messageId));
                     } catch (TelegramApiException e) {
                         throw new RuntimeException(e);

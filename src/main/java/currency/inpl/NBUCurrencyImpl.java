@@ -36,5 +36,11 @@ public class NBUCurrencyImpl implements CurrencyService {
                 .orElseThrow();
     }
 
+    @Override
+    public double getCurrenceRateSell(Currency currency) {
+        return 0;
+    }
+
+
 
 }
