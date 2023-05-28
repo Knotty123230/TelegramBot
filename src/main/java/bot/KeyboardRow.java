@@ -66,6 +66,7 @@ public class KeyboardRow {
 
 
         replyKeyboardMarkup.setKeyboard(row);
+        InlineKeyboardMarkup inlineKeyboardMarkup = ButtonService.sendButtonMessage(nameOfButtons, callback);
         SendMessage sendMessage = BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(),"Виберіть час сповіщень");
         sendMessage.setReplyMarkup(replyKeyboardMarkup);
         return sendMessage;
