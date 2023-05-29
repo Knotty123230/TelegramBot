@@ -39,9 +39,6 @@ public class NotificationTimePage implements Update {
         KeyboardRow row3 = new KeyboardRow();
         row3.add(new KeyboardButton("17:00"));
         row3.add(new KeyboardButton("18:00"));
-        row3.add(new KeyboardButton("23:49"));
-        row3.add(new KeyboardButton("23:50"));
-        row3.add(new KeyboardButton("18:00"));
         row3.add(new KeyboardButton("Вимкнути повідомлення"));
 
         keyboardMarkup.setKeyboard(List.of(row1, row2, row3));
