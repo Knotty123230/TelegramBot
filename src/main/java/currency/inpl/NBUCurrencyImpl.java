@@ -17,7 +17,7 @@ public class NBUCurrencyImpl implements CurrencyService {
     public double getCurrenceRate(Currency currency) {
         String url = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchangenew?json";
         String json = null;
-        try{
+        try {
             json = Jsoup.connect(url)
                     .ignoreContentType(true)
                     .get()
@@ -28,7 +28,7 @@ public class NBUCurrencyImpl implements CurrencyService {
         }
         Type type = TypeToken.getParameterized(List.class, NBUCurrencyItemDto.class)
                 .getType();
-        List<NBUCurrencyItemDto> items = new Gson().fromJson(json,type);
+        List<NBUCurrencyItemDto> items = new Gson().fromJson(json, type);
         return items.stream()
                 .filter(it -> it.getCc() == currency)
                 .map(NBUCurrencyItemDto::getRate)
@@ -40,7 +40,6 @@ public class NBUCurrencyImpl implements CurrencyService {
     public double getCurrenceRateSell(Currency currency) {
         return 0;
     }
-
 
 
 }

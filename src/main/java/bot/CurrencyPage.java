@@ -1,13 +1,13 @@
 package bot;
 
-import button.service.ButtonService;
+import service.ButtonService;
 import constants.PageLabels;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import service.BotService;
-import java.util.List;
 
+import java.util.List;
 
 
 public class CurrencyPage {

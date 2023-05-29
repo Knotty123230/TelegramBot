@@ -3,8 +3,8 @@ package currency.dto;
 import currency.MonoCurrency;
 
 public class MonoCurrencyItemDto {
-    private int currencyCodeA ;
-    private int currencyCodeB ;
+    private int currencyCodeA;
+    private int currencyCodeB;
     private float date;
     private float rateBuy;
     private float rateCross;
@@ -14,7 +14,6 @@ public class MonoCurrencyItemDto {
     public MonoCurrency getCurrencyCodeA() {
         return MonoCurrency.fromCode(currencyCodeA);
     }
-
 
 
     public MonoCurrency getCurrencyCodeB() {

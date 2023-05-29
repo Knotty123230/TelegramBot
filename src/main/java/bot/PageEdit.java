@@ -1,6 +1,6 @@
 package bot;
 
-import button.service.ButtonService;
+import service.ButtonService;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -28,7 +28,7 @@ public class PageEdit {
             }
 
             inlineKeyboardMarkup = ButtonService.sendButtonMessage(nameofButtons, callback);
-            sendMessage = BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(), "Обери банк:");
+            sendMessage = BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(), "Обери варіант");
             sendMessage.setReplyMarkup(inlineKeyboardMarkup);
         }
 

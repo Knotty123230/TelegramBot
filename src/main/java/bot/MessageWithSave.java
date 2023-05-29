@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 public class MessageWithSave {
 
-    public SendMessage getUpdate(List<String> buttonsSigns, List<String> buttonsBank, List<String> buttonsCurrency, Update update) throws RuntimeException {
+    public SendMessage getUpdate(Long chatid, List<String> buttonsSigns, List<String> buttonsBank, List<String> buttonsCurrency, Update update) throws RuntimeException {
         String buttonSigns = buttonsSigns.stream()
                 .filter(it -> it.contains(" ✅"))
                 .collect(Collectors.joining());
@@ -83,7 +83,7 @@ public class MessageWithSave {
 
                 formattedRate = decimalFormat != null ? decimalFormat.format(currenceRate) : null;
                 System.out.println("я в моно");
-                sendMessage = BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(),
+                sendMessage = BotService.sendMessage(chatid,
                         "Курс МОНОБАНК " + switch (buttonCurrency) {
                             case "USD" + " ✅" -> "USD";
                             case "EUR" + " ✅" -> "EUR";
@@ -111,35 +111,35 @@ public class MessageWithSave {
                                     "USDSELL " + format2 + "\n" +
                                     "EURSELL " + format3 + "\n");
                 }
-                    privatCurrency = new PrivatCurrencyImpl();
-                    currenceRate = privatCurrency.getCurrenceRateSell(switch (buttonCurrency) {
-                        case "USD ✅":
-                            yield Currency.USD;
-                        case "EUR ✅":
-                            yield Currency.EUR;
-                        default:
-                            throw new RuntimeException();
-                    });
-                    formattedRateSell = decimalFormat != null ? decimalFormat.format(currenceRate) : null;
+                privatCurrency = new PrivatCurrencyImpl();
+                currenceRate = privatCurrency.getCurrenceRateSell(switch (buttonCurrency) {
+                    case "USD ✅":
+                        yield Currency.USD;
+                    case "EUR ✅":
+                        yield Currency.EUR;
+                    default:
+                        throw new RuntimeException();
+                });
+                formattedRateSell = decimalFormat != null ? decimalFormat.format(currenceRate) : null;
 
-                    currenceRate = privatCurrency.getCurrenceRate(switch (buttonCurrency) {
-                        case "USD ✅":
-                            yield Currency.USD;
-                        case "EUR ✅":
-                            yield Currency.EUR;
-                        default:
-                            throw new RuntimeException();
-                    });
-                    formattedRate = decimalFormat != null ? decimalFormat.format(currenceRate) : null;
-                    sendMessage = BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(),
-                            "Курс ПРИВАТБАНК " + switch (buttonCurrency) {
-                                case "USD" + " ✅" -> "USD";
-                                case "EUR" + " ✅" -> "EUR";
-                                default -> throw new RuntimeException();
-                            } + "\n" +
-                                    "Покупка: " + formattedRate + "\n" +
-                                    "Продажа: " + formattedRateSell);
-                }
+                currenceRate = privatCurrency.getCurrenceRate(switch (buttonCurrency) {
+                    case "USD ✅":
+                        yield Currency.USD;
+                    case "EUR ✅":
+                        yield Currency.EUR;
+                    default:
+                        throw new RuntimeException();
+                });
+                formattedRate = decimalFormat != null ? decimalFormat.format(currenceRate) : null;
+                sendMessage = BotService.sendMessage(chatid,
+                        "Курс ПРИВАТБАНК " + switch (buttonCurrency) {
+                            case "USD" + " ✅" -> "USD";
+                            case "EUR" + " ✅" -> "EUR";
+                            default -> throw new RuntimeException();
+                        } + "\n" +
+                                "Покупка: " + formattedRate + "\n" +
+                                "Продажа: " + formattedRateSell);
+            }
 
 
             case "НБУ ✅" -> {
@@ -149,33 +149,33 @@ public class MessageWithSave {
                     String format = decimalFormat != null ? decimalFormat.format(usdBuy) : null;
                     String format1 = decimalFormat != null ? decimalFormat.format(eurBuy) : null;
 
-                    return BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(),
+                    return BotService.sendMessage(chatid,
                             "Курс НБУ USD EUR\n" +
                                     "USDBUY " + format + "\n" +
                                     "EURBUY " + format1 + "\n");
                 }
-                    nbuCurrency = new NBUCurrencyImpl();
-                    currenceRate = nbuCurrency.getCurrenceRate(switch (buttonCurrency) {
-                        case "USD" + " ✅":
-                            yield Currency.USD;
-                        case "EUR" + " ✅":
-                            yield Currency.EUR;
-                        default:
-                            throw new RuntimeException();
-                    });
-                    formattedRate = decimalFormat != null ? decimalFormat.format(currenceRate) : null;
-                    sendMessage = BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(),
-                            "Курс НБУ "
-                                    + switch (buttonCurrency) {
-                                case "USD" + " ✅" -> "USD";
-                                case "EUR" + " ✅" -> "EUR";
-                                default -> throw new RuntimeException();
-                            }
+                nbuCurrency = new NBUCurrencyImpl();
+                currenceRate = nbuCurrency.getCurrenceRate(switch (buttonCurrency) {
+                    case "USD" + " ✅":
+                        yield Currency.USD;
+                    case "EUR" + " ✅":
+                        yield Currency.EUR;
+                    default:
+                        throw new RuntimeException();
+                });
+                formattedRate = decimalFormat != null ? decimalFormat.format(currenceRate) : null;
+                sendMessage = BotService.sendMessage(chatid,
+                        "Курс НБУ "
+                                + switch (buttonCurrency) {
+                            case "USD" + " ✅" -> "USD";
+                            case "EUR" + " ✅" -> "EUR";
+                            default -> throw new RuntimeException();
+                        }
 
-                                    + ":\n" +
-                                    "Покупка: " + formattedRate + "\n");
-                }
+                                + ":\n" +
+                                "Покупка: " + formattedRate + "\n");
             }
+        }
 
 
         return sendMessage;

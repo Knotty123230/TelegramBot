@@ -1,8 +1,6 @@
 package User;
 
 import constants.PageLabels;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,12 +10,12 @@ import static constants.PageLabels.currUsdLabel;
 
 public class UserSettings {
 
-    private final List<String> buttonsCurrency= new ArrayList<>(List.of(
+    private final List<String> buttonsCurrency = new ArrayList<>(List.of(
             "USD ✅",
             "EUR",
             "OK"
     ));
-    private final List<String> buttonsBank= new ArrayList<>(List.of(
+    private final List<String> buttonsBank = new ArrayList<>(List.of(
             "НБУ",
             "ПриватБанк ✅",
             "Монобанк",
@@ -32,7 +30,7 @@ public class UserSettings {
             currEurLabel,
             "OK"
     ));
-    private final List<String> queryBank= new ArrayList<>(List.of(
+    private final List<String> queryBank = new ArrayList<>(List.of(
             PageLabels.bankNBULabel,
             PageLabels.bankPrivatLabel,
             PageLabels.bankMonoLabel,
@@ -42,6 +40,29 @@ public class UserSettings {
             "2",
             "3",
             "4"));
+
+
+    public String notificationTime = "";
+
+    public boolean isNotificationsEnabled() {
+        // Перевіряємо, чи встановлено значення "Вимкнути повідомлення"
+        return !notificationTime.equals("Вимкнути повідомлення");
+    }
+
+    @Override
+    public String toString() {
+        String notification = "";
+        return "UserSettings{" +
+                "buttonsCurrency=" + buttonsCurrency +
+                ", buttonsBank=" + buttonsBank +
+                ", buttonsSins=" + buttonsSins +
+                ", queryCurrency=" + queryCurrency +
+                ", queryBank=" + queryBank +
+                ", querySins=" + querySins +
+                ", notificationTime='" + notificationTime + '\'' +
+                ", notification='" + notification + '\'' +
+                '}';
+    }
 
     public List<String> getButtonsCurrency() {
         return buttonsCurrency;
@@ -65,5 +86,13 @@ public class UserSettings {
 
     public List<String> getQuerySins() {
         return querySins;
+    }
+
+    public String getNotificationTime() {
+        return notificationTime;
+    }
+
+    public void setNotificationTime(String notificationTime) {
+        this.notificationTime = notificationTime;
     }
 }
