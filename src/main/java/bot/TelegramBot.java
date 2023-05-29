@@ -136,6 +136,14 @@ public class TelegramBot extends TelegramLongPollingBot {
                     }
                 }
 
+                case PageLabels.timeLabel -> {
+                    try {
+                        execute(new NotificationTimePage().getUpdate(update));
+                    } catch (TelegramApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
                 case PageLabels.commaSignsLabel -> {
                     try {
                         execute(new CountSince().getUpdate(userSettings.getButtonsSins(), userSettings.getQuerySins(), update));
