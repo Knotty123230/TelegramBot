@@ -9,6 +9,7 @@ import static constants.PageLabels.currEurLabel;
 import static constants.PageLabels.currUsdLabel;
 
 public class UserSettings {
+    private final Long chatId = 0L;
 
     private final List<String> buttonsCurrency = new ArrayList<>(List.of(
             "USD ✅",

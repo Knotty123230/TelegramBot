@@ -1,6 +1,7 @@
 package bot;
 
 import User.UserSettings;
+import User.save.SaveUser;
 import service.ButtonService;
 import constants.PageLabels;
 import it.sauronsoftware.cron4j.Scheduler;
@@ -27,7 +28,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private final String token;
     private final String username;
-    private final Map<Long, UserSettings> userSettingsMap = new HashMap<>();
+    private Map<Long, UserSettings> userSettingsMap = new HashMap<>();
     private final Map<Long, UserSettings> notificationMap = new HashMap<>();
     private final Scheduler scheduler = new Scheduler();
 
@@ -36,12 +37,12 @@ public class TelegramBot extends TelegramLongPollingBot {
         super(botToken);
         this.token = token;
         this.username = username;
+        this.userSettingsMap = SaveUser.load("application.json");
     }
 
 
     @Override
     public void onUpdateReceived(Update update) {
-
         if (update.hasMessage()) {
             if (update.getMessage().getText().equals("/start")) {
                 if (update.hasMessage()) {
@@ -62,9 +63,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             UserSettings userSettings = userSettingsMap.get(update.getMessage().getChatId());
             if (userSettings == null) {
                 userSettings = new UserSettings();
-                notificationMap.put(update.getMessage().getChatId(), userSettings);
-            } else {
-                notificationMap.putIfAbsent(update.getMessage().getChatId(), userSettings);
+                userSettingsMap.put(update.getMessage().getChatId(), userSettings);
             }
 
             userSettings.setNotificationTime(update.getMessage().getText());
@@ -95,7 +94,6 @@ public class TelegramBot extends TelegramLongPollingBot {
 
 
         } else if (update.hasCallbackQuery()) {
-
             String data = update.getCallbackQuery().getData();
             Long chatId = update.getCallbackQuery().getMessage().getChatId();
             Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
@@ -195,6 +193,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             }
         }
+        SaveUser.save(userSettingsMap != null ? userSettingsMap : null, "application.json");
     }
 
     public void sendScheduledMessages(Update update) {
@@ -202,10 +201,11 @@ public class TelegramBot extends TelegramLongPollingBot {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         String currentTimeFormatted = currentTime.format(formatter);
         System.out.println(currentTimeFormatted);
-        for (Map.Entry<Long, UserSettings> entry : getNotificationMap().entrySet()) {
+        for (Map.Entry<Long, UserSettings> entry : userSettingsMap.entrySet()) {
             Long chatId = entry.getKey();
             UserSettings userSettings = entry.getValue();
-            if (update.getMessage().getChatId().equals(chatId) && currentTimeFormatted.equals(userSettings.getNotificationTime()) && userSettings.isNotificationsEnabled()) {
+            if (update.getMessage().getChatId().equals(chatId) && currentTimeFormatted.equals(userSettings.getNotificationTime())
+                    && userSettings.isNotificationsEnabled()) {
                 try {
                     System.out.println(userSettings);
                     SendMessage update1 = new MessageWithSave().getUpdate(chatId, userSettings.getButtonsSins(), userSettings.getButtonsBank(),
