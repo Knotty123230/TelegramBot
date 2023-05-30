@@ -28,7 +28,7 @@ public class PageEdit {
             }
 
             inlineKeyboardMarkup = ButtonService.sendButtonMessage(nameofButtons, callback);
-            sendMessage = BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(), "Обери (працює для діалогів Банк і Кількість знаків):");
+            sendMessage = BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(), "Обери варіант:");
             sendMessage.setReplyMarkup(inlineKeyboardMarkup);
         }
 
