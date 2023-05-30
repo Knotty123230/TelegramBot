@@ -55,10 +55,14 @@ public class UserSettings {
     public boolean isSchedulerRunning() {
         return isSchedulerRunning;
     }
+    private boolean isNotificationsEnabled = true;
 
     public boolean isNotificationsEnabled() {
-        // Перевіряємо, чи встановлено значення "Вимкнути повідомлення"
-        return !notificationTime.equals("Вимкнути повідомлення");
+        return isNotificationsEnabled;
+    }
+
+    public void setNotificationsEnabled(boolean notificationsEnabled) {
+        isNotificationsEnabled = notificationsEnabled;
     }
 
     @Override

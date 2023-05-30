@@ -84,17 +84,23 @@ public class TelegramBot extends TelegramLongPollingBot {
                 case "Вимкнути повідомлення" -> {
                     try {
                         execute(BotService.sendMessage(update.getMessage().getChatId(), "Ви вимкнули повідомлення!"));
+                        userSettings.setNotificationsEnabled(false);
                     } catch (TelegramApiException e) {
                         throw new RuntimeException(e);
                     }
                 }
             }
-            if (!userSettings.isSchedulerRunning()) {
+            if (!userSettings.isSchedulerRunning() || !userSettings.getNotificationTime().equals(update.getMessage().getText())) {
+                if (userSettings.isSchedulerRunning()) {
+                    scheduler.stop();
+                }
+
                 scheduler.schedule("* * * * *", () -> sendScheduledMessages(update));
                 scheduler.start();
-                userSettings.setSchedulerRunning(true);
-            }
 
+                userSettings.setSchedulerRunning(true);
+                userSettings.setNotificationTime(update.getMessage().getText());
+            }
 
 
         } else if (update.hasCallbackQuery()) {
