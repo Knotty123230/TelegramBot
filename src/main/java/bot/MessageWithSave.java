@@ -104,7 +104,7 @@ public class MessageWithSave {
                     String format1 = decimalFormat != null ? decimalFormat.format(eurBuy) : null;
                     String format2 = decimalFormat != null ? decimalFormat.format(currenceRateSell) : null;
                     String format3 = decimalFormat != null ? decimalFormat.format(currenceRateSell1) : null;
-                    return BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(),
+                    return BotService.sendMessage(chatid,
                             "Курс ПРИВАТБАНК USD EUR\n" +
                                     "USDBUY " + format + "\n" +
                                     "EURBUY " + format1 + "\n" +

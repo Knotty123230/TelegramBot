@@ -9,7 +9,6 @@ import static constants.PageLabels.currEurLabel;
 import static constants.PageLabels.currUsdLabel;
 
 public class UserSettings {
-    private final Long chatId = 0L;
 
     private final List<String> buttonsCurrency = new ArrayList<>(List.of(
             "USD ✅",
@@ -44,6 +43,16 @@ public class UserSettings {
 
 
     public String notificationTime = "";
+
+    public void setSchedulerRunning(boolean schedulerRunning) {
+        isSchedulerRunning = schedulerRunning;
+    }
+
+    private boolean isSchedulerRunning = false;
+
+    public boolean isSchedulerRunning() {
+        return isSchedulerRunning;
+    }
 
     public boolean isNotificationsEnabled() {
         // Перевіряємо, чи встановлено значення "Вимкнути повідомлення"

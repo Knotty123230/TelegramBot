@@ -16,12 +16,14 @@ public class UserSettingsPage implements Update {
                 "Кількість знаків після коми",
                 "Банк",
                 "Валюти",
-                "Час оповіщень");
+                "Час оповіщень",
+                "Назад⬆");
         List<String> callback = List.of(
                 PageLabels.commaSignsLabel,
                 PageLabels.banksLabel,
                 PageLabels.currenciesLabel,
-                PageLabels.timeLabel);
+                PageLabels.timeLabel,
+                "Назад⬆");
 
         InlineKeyboardMarkup inlineKeyboardMarkup = ButtonService.sendButtonMessage(nameOfButtons, callback);
         SendMessage sendMessage = BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(), "Обери налаштування:");

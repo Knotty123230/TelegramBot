@@ -89,8 +89,12 @@ public class TelegramBot extends TelegramLongPollingBot {
                     }
                 }
             }
-            scheduler.schedule("* * * * *", () -> sendScheduledMessages(update));
-            scheduler.start();
+            if (!userSettings.isSchedulerRunning()) {
+                scheduler.schedule("* * * * *", () -> sendScheduledMessages(update));
+                scheduler.start();
+                userSettings.setSchedulerRunning(true);
+            }
+
 
 
         } else if (update.hasCallbackQuery()) {
@@ -105,6 +109,20 @@ public class TelegramBot extends TelegramLongPollingBot {
 
 
             switch (data) {
+                case "Назад⬆" -> {
+                    try {
+                        execute(BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(),
+                                "Привіт, я бот, який надає актуальні курси валют!"));
+                        SendPhoto sendPhoto = sendPhoto(update.getCallbackQuery().getMessage().getChatId(), "photo/photo.jpg");
+                        sendPhoto.setReplyMarkup(ButtonService.sendButtonMessage(List.of("Start"), List.of("Start")));
+                        sendPhoto.setReplyMarkup(ButtonService.sendButtonMessage(List.of("Отримати інфо", "Налаштування"),
+                                List.of("Отримати інфо", "Налаштування")));
+                        execute(sendPhoto);
+                        execute(BotService.deleteMessage(chatId.toString(), messageId));
+                    } catch (TelegramApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
 
                 case "Отримати інфо" -> {
                     try {

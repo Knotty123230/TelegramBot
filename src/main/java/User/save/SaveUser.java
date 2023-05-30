@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -39,6 +40,11 @@ public class SaveUser {
 
     public static Map<Long, UserSettings> load(String fileName) {
         Map<Long, UserSettings> map = new HashMap<>();
+
+        File file = new File(fileName);
+        if (!file.exists() || file.length() == 0) {
+            return map;
+        }
 
         try (FileReader reader = new FileReader(fileName)) {
             Gson gson = new Gson();
