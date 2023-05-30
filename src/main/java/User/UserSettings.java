@@ -24,7 +24,8 @@ public class UserSettings {
             "1 ✅",
             "2",
             "3",
-            "4"));
+            "4",
+            "OK"));
     private final List<String> queryCurrency = new ArrayList<>(List.of(
             currUsdLabel + " ✅",
             currEurLabel,
@@ -39,7 +40,8 @@ public class UserSettings {
             "1",
             "2",
             "3",
-            "4"));
+            "4",
+            "OK"));
 
 
     public String notificationTime = "";

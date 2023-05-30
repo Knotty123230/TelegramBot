@@ -27,8 +27,6 @@ public class NotificationTimePage implements Update {
         row1.add(new KeyboardButton("10:00"));
         row1.add(new KeyboardButton("11:00"));
         row1.add(new KeyboardButton("12:00"));
-        row1.add(new KeyboardButton("12:05"));
-        row1.add(new KeyboardButton("12:06"));
 
 
         KeyboardRow row2 = new KeyboardRow();
