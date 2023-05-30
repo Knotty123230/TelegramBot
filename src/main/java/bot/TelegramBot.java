@@ -45,8 +45,8 @@ public class TelegramBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         if (update.hasMessage()) {
             if (update.getMessage().getText().equals("/start")) {
-                if (update.hasMessage()) {
-                    if (update.getMessage().getText().equals("/start")) {
+//                if (update.hasMessage()) {
+//                    if (update.getMessage().getText().equals("/start")) {
                         try {
                             execute(new StartMessage().getUpdate(update));
                             SendPhoto sendPhoto = sendPhoto(update.getMessage().getChatId(), "photo/photo.jpg");
@@ -57,8 +57,8 @@ public class TelegramBot extends TelegramLongPollingBot {
                         } catch (TelegramApiException e) {
                             throw new RuntimeException(e);
                         }
-                    }
-                }
+//                    }
+//                }
             }
             UserSettings userSettings = userSettingsMap.get(update.getMessage().getChatId());
             if (userSettings == null) {

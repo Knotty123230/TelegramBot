@@ -15,7 +15,7 @@ public class CurrencyPage {
         SendMessage sendMessage = null;
         if (update.getCallbackQuery().getData().equals(PageLabels.currenciesLabel)) {
             InlineKeyboardMarkup inlineKeyboardMarkup = ButtonService.sendButtonMessage(nameOfButtons, callback);
-            sendMessage = BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(), "Обери кнопки");
+            sendMessage = BotService.sendMessage(update.getCallbackQuery().getMessage().getChatId(), "Обери валюту:");
             sendMessage.setReplyMarkup(inlineKeyboardMarkup);
         }
 
