@@ -73,14 +73,14 @@ public class TelegramBot extends TelegramLongPollingBot {
                         "17:00", "18:00" -> {
                     try {
                         execute(BotService.sendMessage(update.getMessage().getChatId(), "Вам буде надіслано актуальний курс валют, " +
-                                "які ви обрали, об " + userSettings.getNotificationTime() + "!"));
+                                "які ви обрали, о " + userSettings.getNotificationTime() + "!"));
                     } catch (TelegramApiException e) {
                         throw new RuntimeException(e);
                     }
                 }
-                case "Вимкнути повідомлення" -> {
+                case "Вимкнути оповіщення" -> {
                     try {
-                        execute(BotService.sendMessage(update.getMessage().getChatId(), "Ви вимкнули повідомлення!"));
+                        execute(BotService.sendMessage(update.getMessage().getChatId(), "Ви вимкнули оповіщення!"));
                         userSettings.setNotificationsEnabled(false);
                     } catch (TelegramApiException e) {
                         throw new RuntimeException(e);
