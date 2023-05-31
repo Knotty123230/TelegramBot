@@ -1,6 +1,7 @@
 package User;
 
 import constants.PageLabels;
+import currency.inpl.MonoCurrencyImpl;
 
 import java.util.ArrayList;
 import java.util.List;

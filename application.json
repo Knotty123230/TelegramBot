@@ -1,5 +1,49 @@
 [
   {
+    "chatId": 497864766,
+    "userSettings": {
+      "buttonsCurrency": [
+        "USD ✅",
+        "EUR ✅",
+        "OK"
+      ],
+      "buttonsBank": [
+        "НБУ",
+        "ПриватБанк",
+        "Монобанк ✅",
+        "OK"
+      ],
+      "buttonsSins": [
+        "1 ✅",
+        "2",
+        "3",
+        "4",
+        "OK"
+      ],
+      "queryCurrency": [
+        "USD ✅",
+        "EUR ✅",
+        "OK"
+      ],
+      "queryBank": [
+        "НБУ",
+        "ПриватБанк",
+        "Монобанк",
+        "OK"
+      ],
+      "querySins": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "OK"
+      ],
+      "notificationTime": "/start",
+      "isSchedulerRunning": true,
+      "isNotificationsEnabled": true
+    }
+  },
+  {
     "chatId": 796488589,
     "userSettings": {
       "buttonsCurrency": [
@@ -8,9 +52,9 @@
         "OK"
       ],
       "buttonsBank": [
-        "НБУ ✅",
+        "НБУ",
         "ПриватБанк",
-        "Монобанк",
+        "Монобанк ✅",
         "OK"
       ],
       "buttonsSins": [
@@ -38,9 +82,9 @@
         "4",
         "OK"
       ],
-      "notificationTime": "15:00",
+      "notificationTime": "11:00",
       "isSchedulerRunning": true,
-      "isNotificationsEnabled": true
+      "isNotificationsEnabled": false
     }
   },
   {
@@ -53,15 +97,15 @@
       ],
       "buttonsBank": [
         "НБУ",
-        "ПриватБанк ✅",
-        "Монобанк",
+        "ПриватБанк",
+        "Монобанк ✅",
         "OK"
       ],
       "buttonsSins": [
         "1",
-        "2",
+        "2 ✅",
         "3",
-        "4 ✅",
+        "4",
         "OK"
       ],
       "queryCurrency": [
@@ -82,7 +126,7 @@
         "4",
         "OK"
       ],
-      "notificationTime": "/start",
+      "notificationTime": "14:00",
       "isSchedulerRunning": true,
       "isNotificationsEnabled": true
     }
@@ -172,6 +216,50 @@
       ],
       "notificationTime": "Вимкнути повідомлення",
       "isSchedulerRunning": true,
+      "isNotificationsEnabled": false
+    }
+  },
+  {
+    "chatId": 392527848,
+    "userSettings": {
+      "buttonsCurrency": [
+        "USD ✅",
+        "EUR",
+        "OK"
+      ],
+      "buttonsBank": [
+        "НБУ",
+        "ПриватБанк",
+        "Монобанк ✅",
+        "OK"
+      ],
+      "buttonsSins": [
+        "1 ✅",
+        "2",
+        "3",
+        "4",
+        "OK"
+      ],
+      "queryCurrency": [
+        "USD ✅",
+        "EUR",
+        "OK"
+      ],
+      "queryBank": [
+        "НБУ",
+        "ПриватБанк",
+        "Монобанк",
+        "OK"
+      ],
+      "querySins": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "OK"
+      ],
+      "notificationTime": "Вимкнути повідомлення",
+      "isSchedulerRunning": false,
       "isNotificationsEnabled": false
     }
   }
